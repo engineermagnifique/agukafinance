@@ -59,7 +59,10 @@ export default function RootLayout({ children }) {
       data-scroll-behavior="smooth"
       className={montserrat.variable}
     >
-      <body className="flex min-h-full flex-col bg-white font-sans text-ink antialiased">
+      <body
+        className="flex min-h-full flex-col bg-white font-sans text-ink antialiased"
+        suppressHydrationWarning
+      >
         <a
           href="#main-content"
           className="sr-only fixed left-3 top-3 z-[100] rounded bg-white px-3.5 py-2.5 text-navy focus:not-sr-only"
