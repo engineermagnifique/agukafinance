@@ -23,12 +23,16 @@ export async function POST(request) {
     isNewVisitor = true;
   }
 
-  recordPageView({
-    path,
-    referrer,
-    visitorId,
-    userAgent: request.headers.get("user-agent") || "",
-  });
+  try {
+    recordPageView({
+      path,
+      referrer,
+      visitorId,
+      userAgent: request.headers.get("user-agent") || "",
+    });
+  } catch (error) {
+    console.error("[track] failed to record page view", error);
+  }
 
   const response = NextResponse.json({ ok: true });
   if (isNewVisitor) {
