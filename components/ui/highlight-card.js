@@ -6,6 +6,7 @@ import Tilt from "react-parallax-tilt";
 export default function HighlightCard({ item, isFocused, onHoverStart, onHoverEnd }) {
   return (
     <motion.div
+      className="h-full"
       animate={{
         scale: isFocused ? 1.06 : 1,
         y: isFocused ? -6 : 0,
@@ -26,7 +27,7 @@ export default function HighlightCard({ item, isFocused, onHoverStart, onHoverEn
         glareBorderRadius="12px"
         onEnter={onHoverStart}
         onLeave={onHoverEnd}
-        className={`group relative flex flex-col items-center gap-2.5 overflow-hidden rounded-xl border border-gray-100 bg-white px-4 py-6 text-center text-navy shadow-[0_16px_40px_rgba(15,28,46,0.12)] transition-shadow duration-300 ${
+        className={`group relative flex h-full flex-col items-center gap-2.5 overflow-hidden rounded-xl border border-gray-100 bg-white px-4 py-6 text-center text-navy shadow-[0_16px_40px_rgba(15,28,46,0.12)] transition-shadow duration-300 ${
           isFocused ? "shadow-[0_24px_50px_rgba(15,28,46,0.24)]" : ""
         }`}
       >
