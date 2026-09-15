@@ -41,14 +41,14 @@ export default function ServicesSection() {
             </p>
           </Reveal>
 
-          <div className="mx-auto mt-12 grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mx-auto mt-12 flex max-w-5xl flex-wrap justify-center gap-4">
             {services.map((service, index) => (
-              <ServiceCard
+              <div
                 key={service.id}
-                service={service}
-                index={index}
-                delay={0.05 + index * 0.1}
-              />
+                className="grow shrink basis-full sm:basis-[calc(50%-0.5rem)] lg:basis-[calc(33.333%-0.667rem)]"
+              >
+                <ServiceCard service={service} index={index} delay={0.05 + index * 0.1} />
+              </div>
             ))}
           </div>
         </div>

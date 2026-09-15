@@ -44,7 +44,7 @@ export default function HighlightsStrip() {
             key={item.title}
             delay={0.05 + index * 0.08}
             as="div"
-            className="w-[calc(50%-0.5rem)] sm:w-[calc(33.333%-0.667rem)] lg:w-[calc(20%-0.8rem)]"
+            className="grow shrink basis-[calc(50%-0.5rem)] sm:basis-[calc(33.333%-0.667rem)] lg:basis-[calc(20%-0.8rem)]"
           >
             <HighlightCard
               item={item}
