@@ -10,7 +10,6 @@ const highlights = [
     icon: ShieldCheck,
     title: "Insurance",
     description: "Life, home, auto and commercial coverage built around your family or business.",
-    highlight: true,
   },
   {
     icon: Heart,
@@ -50,7 +49,6 @@ export default function HighlightsStrip() {
             <HighlightCard
               item={item}
               isFocused={hoveredIndex === index}
-              isDimmed={hoveredIndex !== null && hoveredIndex !== index}
               onHoverStart={() => setHoveredIndex(index)}
               onHoverEnd={() => setHoveredIndex(null)}
             />
