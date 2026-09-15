@@ -281,9 +281,15 @@ export default function ConsultationForm({ initialService = null, className }) {
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="rounded-[3px] bg-gradient-to-br from-brand to-brand-dark px-5 py-4 text-sm font-semibold text-white transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70"
+        className="group/submit relative overflow-hidden rounded-[3px] bg-gradient-to-tr from-brand-dark to-brand px-5 py-4 text-sm font-semibold text-white transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70"
       >
-        {status === "submitting" ? "Sending…" : "Request Free Consultation →"}
+        <span
+          aria-hidden="true"
+          className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover/submit:translate-x-full"
+        />
+        <span className="relative">
+          {status === "submitting" ? "Sending…" : "Request Free Consultation →"}
+        </span>
       </button>
 
       <AnimatePresence>

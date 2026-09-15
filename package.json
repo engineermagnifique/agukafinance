@@ -9,11 +9,14 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "framer-motion": "^12",
+    "better-sqlite3": "^13.0.3",
+    "framer-motion": "^12.43.0",
     "lucide-react": "^0.545.0",
     "next": "16.3.4",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "react-parallax-tilt": "^1.7.342",
+    "recharts": "^3.10.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

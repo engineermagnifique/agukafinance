@@ -2,40 +2,83 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
 import { testimonials } from "@/lib/site-config";
 
+const SWIPE_THRESHOLD = 60;
+
+function initialsFor(name) {
+  return name
+    .split(" ")
+    .map((part) => part[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+}
+
 export default function TestimonialCarousel() {
-  const [index, setIndex] = useState(0);
+  const [[index, direction], setState] = useState([0, 0]);
   const active = testimonials[index];
 
   function go(nextIndex) {
-    setIndex((nextIndex + testimonials.length) % testimonials.length);
+    const dir = nextIndex > index ? 1 : -1;
+    setState([(nextIndex + testimonials.length) % testimonials.length, dir]);
   }
 
   return (
     <div className="mx-auto max-w-3xl">
-      <div className="relative rounded-sm border border-gray-200 bg-white px-6 py-10 shadow-[0_16px_40px_rgba(15,28,46,0.08)] sm:px-14 sm:py-14">
-        <span className="grid h-12 w-12 place-items-center rounded-full bg-[#fff3e8] text-brand">
+      <div className="relative overflow-hidden rounded-xl border border-gray-200 bg-white px-6 py-10 shadow-[0_16px_40px_rgba(15,28,46,0.08)] sm:px-14 sm:py-14">
+        <motion.span
+          initial={{ scale: 0, rotate: -20 }}
+          whileInView={{ scale: 1, rotate: 0 }}
+          viewport={{ once: true }}
+          transition={{ type: "spring", stiffness: 260, damping: 18 }}
+          className="grid h-12 w-12 place-items-center rounded-full bg-[#fff3e8] text-brand"
+        >
           <Quote size={22} fill="currentColor" strokeWidth={0} />
-        </span>
+        </motion.span>
 
-        <div aria-live="polite" className="min-h-[160px] sm:min-h-[130px]">
-          <AnimatePresence mode="wait">
+        <div aria-live="polite" className="min-h-[190px] sm:min-h-[150px]">
+          <AnimatePresence mode="wait" custom={direction}>
             <motion.blockquote
               key={index}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.6}
+              onDragEnd={(_event, info) => {
+                if (info.offset.x < -SWIPE_THRESHOLD) go(index + 1);
+                else if (info.offset.x > SWIPE_THRESHOLD) go(index - 1);
+              }}
+              custom={direction}
+              initial={{ opacity: 0, x: direction >= 0 ? 40 : -40 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: direction >= 0 ? -40 : 40 }}
               transition={{ duration: 0.35, ease: "easeOut" }}
-              className="mt-6"
+              className="mt-6 cursor-grab active:cursor-grabbing"
             >
-              <p className="text-lg leading-relaxed text-ink sm:text-xl">
+              <div className="flex gap-1 text-gold">
+                {Array.from({ length: 5 }).map((_, starIndex) => (
+                  <motion.span
+                    key={starIndex}
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.1 + starIndex * 0.06 }}
+                  >
+                    <Star size={15} fill="currentColor" strokeWidth={0} />
+                  </motion.span>
+                ))}
+              </div>
+              <p className="mt-4 text-lg leading-relaxed text-ink sm:text-xl">
                 &ldquo;{active.quote}&rdquo;
               </p>
-              <footer className="mt-6">
-                <p className="font-bold text-navy">{active.name}</p>
-                <p className="text-sm text-muted">{active.role}</p>
+              <footer className="mt-6 flex items-center gap-3">
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gradient-to-br from-brand to-brand-dark text-xs font-bold text-white">
+                  {initialsFor(active.name)}
+                </span>
+                <span>
+                  <p className="font-bold text-navy">{active.name}</p>
+                  <p className="text-sm text-muted">{active.role}</p>
+                </span>
               </footer>
             </motion.blockquote>
           </AnimatePresence>

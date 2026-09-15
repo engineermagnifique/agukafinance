@@ -3,10 +3,9 @@
 import { useId, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ArrowRight } from "lucide-react";
-import { personalLinesCoverage } from "@/lib/site-config";
 import { useConsultationModal } from "@/components/ui/consultation-modal-provider";
 
-export default function CoverageAccordion() {
+export default function ServiceAccordion({ items, servicePrefix, triggerLabel }) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
   const { openFor } = useConsultationModal();
@@ -20,7 +19,7 @@ export default function CoverageAccordion() {
         aria-controls={panelId}
         className="flex w-full items-center justify-between gap-2.5 text-left text-xs font-semibold text-brand"
       >
-        <span>View coverage options</span>
+        <span>{triggerLabel}</span>
         <motion.span
           animate={{ rotate: open ? 180 : 0 }}
           transition={{ duration: 0.2 }}
@@ -40,11 +39,11 @@ export default function CoverageAccordion() {
             className="overflow-hidden"
           >
             <ul className="mt-3 max-h-[225px] overflow-y-auto border-t border-brand/20">
-              {personalLinesCoverage.map((item) => (
+              {items.map((item) => (
                 <li key={item} className="border-b border-gray-200">
                   <button
                     type="button"
-                    onClick={() => openFor(`Personal Lines: ${item}`)}
+                    onClick={() => openFor(`${servicePrefix}: ${item}`)}
                     className="flex w-full items-center justify-between gap-2.5 py-2.5 text-left text-xs text-ink transition-colors hover:text-brand"
                   >
                     <span>{item}</span>

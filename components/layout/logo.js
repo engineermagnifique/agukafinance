@@ -11,7 +11,7 @@ export default function Logo({ size = "header" }) {
 
   return (
     <Link
-      href="#home"
+      href="/"
       aria-label={`${siteConfig.name} home`}
       className="inline-flex shrink-0 items-center"
     >
@@ -20,7 +20,7 @@ export default function Logo({ size = "header" }) {
         alt={siteConfig.name}
         width={dimensions.width}
         height={dimensions.height}
-        className={`${dimensions.className} h-auto`}
+        className={`${dimensions.className} h-auto rounded-xl`}
         priority={size === "header"}
       />
     </Link>

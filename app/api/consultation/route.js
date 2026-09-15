@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { createLead } from "@/lib/leads";
 
 const REQUIRED_FIELDS = [
   "firstName",
@@ -64,7 +65,15 @@ export async function POST(request) {
     );
   }
 
-  console.info("[consultation-request]", data);
+  try {
+    createLead(data);
+  } catch (error) {
+    console.error("[consultation-request] failed to save lead", error);
+    return NextResponse.json(
+      { error: "We could not save your request. Please call us instead." },
+      { status: 500 }
+    );
+  }
 
   return NextResponse.json({ ok: true });
 }

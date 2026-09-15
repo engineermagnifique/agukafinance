@@ -1,18 +1,44 @@
+import { Facebook, Instagram, Linkedin, Home as HomeIcon } from "lucide-react";
 import Logo from "@/components/layout/logo";
-import { siteConfig } from "@/lib/site-config";
+import { siteConfig, socialLinks } from "@/lib/site-config";
+
+const socialIcons = { Facebook, Instagram, Linkedin };
+
+const legalLinks = [
+  { label: "Privacy Policy", href: "/privacy-policy" },
+  { label: "Terms of Service", href: "/terms-of-service" },
+  { label: "Accessibility Statement", href: "/accessibility" },
+];
 
 export default function SiteFooter() {
   const year = new Date().getFullYear();
 
   return (
     <footer className="bg-deep text-white/40">
-      <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1.2fr_1.4fr] lg:px-10 lg:py-20">
+      <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1.2fr_1.4fr] lg:px-10 lg:py-20">
         <div className="flex flex-col items-start gap-4">
           <Logo size="footer" />
           <p className="max-w-xs text-[13px] leading-relaxed text-white/50">
             Building and protecting what matters most through honest
             guidance and personal service.
           </p>
+          <div className="flex items-center gap-3">
+            {socialLinks.map((social) => {
+              const Icon = socialIcons[social.icon];
+              return (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  aria-label={social.label}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="grid h-9 w-9 place-items-center rounded-full bg-white/5 text-white/60 transition-colors hover:bg-brand hover:text-white"
+                >
+                  {Icon && <Icon size={15} />}
+                </a>
+              );
+            })}
+          </div>
         </div>
 
         <div className="flex flex-col gap-3 text-[12px]">
@@ -25,6 +51,17 @@ export default function SiteFooter() {
           <a href="#contact" className="text-white/50 hover:text-brand">
             Contact Us
           </a>
+        </div>
+
+        <div className="flex flex-col gap-3 text-[12px]">
+          <h4 className="text-[11px] font-semibold uppercase tracking-[1.5px] text-white/70">
+            Legal
+          </h4>
+          {legalLinks.map((link) => (
+            <a key={link.href} href={link.href} className="text-white/50 hover:text-brand">
+              {link.label}
+            </a>
+          ))}
         </div>
 
         <div className="flex flex-col gap-3 text-[12px]">
@@ -56,6 +93,18 @@ export default function SiteFooter() {
           <p className="leading-relaxed text-white/50">
             {siteConfig.license.broker}
           </p>
+          <a
+            href="https://www.nmlsconsumeraccess.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white/50 hover:text-brand"
+          >
+            NMLS Consumer Access
+          </a>
+          <span className="mt-1 inline-flex items-center gap-1.5 text-white/50">
+            <HomeIcon size={13} className="shrink-0" />
+            Equal Housing Opportunity
+          </span>
         </div>
       </div>
 
@@ -74,12 +123,19 @@ export default function SiteFooter() {
               services are provided by a licensed mortgage loan originator
               through an approved mortgage broker firm. The third-party rate
               link opens a separate website. Programs, rates and eligibility
-              are subject to lender guidelines and approval.
+              are subject to lender guidelines and approval. AGUKA Financial
+              Group supports the Equal Credit Opportunity Act and the Fair
+              Housing Act.
             </p>
           </div>
-          <p className="whitespace-nowrap text-[9px] text-white/40">
-            © {year} AGUKA Financial Group.
-          </p>
+          <div className="flex flex-col items-start gap-1 lg:items-end">
+            <p className="whitespace-nowrap text-[9px] text-white/40">
+              © {year} AGUKA Financial Group.
+            </p>
+            <p className="whitespace-nowrap text-[9px] text-white/30">
+              Powered by Magnifique N
+            </p>
+          </div>
         </div>
       </div>
     </footer>
