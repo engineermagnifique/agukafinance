@@ -1,4 +1,5 @@
-import { Search, Bell } from "lucide-react";
+import { Search, Bell, LogOut } from "lucide-react";
+import { logoutAction } from "@/app/dashboard/actions";
 
 export default function DashboardHeader({ email }) {
   const initials = (email || "A").slice(0, 2).toUpperCase();
@@ -37,6 +38,15 @@ export default function DashboardHeader({ email }) {
             <span className="block text-muted">{email}</span>
           </span>
         </div>
+        <form action={logoutAction} className="sm:hidden">
+          <button
+            type="submit"
+            aria-label="Log out"
+            className="grid h-9 w-9 place-items-center rounded-full text-muted transition-colors hover:bg-cream hover:text-navy"
+          >
+            <LogOut size={17} />
+          </button>
+        </form>
       </div>
     </header>
   );

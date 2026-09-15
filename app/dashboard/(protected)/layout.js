@@ -6,6 +6,7 @@ import { logoutAction } from "@/app/dashboard/actions";
 import { siteConfig } from "@/lib/site-config";
 import logo from "@/public/images/logo.png";
 import SidebarNav from "@/components/dashboard/sidebar-nav";
+import MobileTabBar from "@/components/dashboard/mobile-tab-bar";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
 import PageTransition from "@/components/dashboard/page-transition";
 import Reveal from "@/components/ui/reveal";
@@ -29,7 +30,7 @@ export default async function DashboardLayout({ children }) {
 
   return (
     <div className="flex min-h-screen flex-col bg-cream text-ink sm:flex-row">
-      <aside className="relative flex shrink-0 flex-col overflow-hidden bg-navy sm:sticky sm:top-0 sm:h-screen sm:w-64">
+      <aside className="relative hidden shrink-0 flex-col overflow-hidden bg-navy sm:sticky sm:top-0 sm:flex sm:h-screen sm:w-64">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -left-16 -top-16 h-56 w-56 rounded-full bg-brand/10 blur-3xl"
@@ -74,10 +75,12 @@ export default async function DashboardLayout({ children }) {
 
       <div className="flex min-w-0 flex-1 flex-col">
         <DashboardHeader email={session.email} />
-        <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-8">
+        <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-24 pt-8 sm:px-8 sm:pb-8">
           <PageTransition>{children}</PageTransition>
         </main>
       </div>
+
+      <MobileTabBar badges={badges} />
     </div>
   );
 }
