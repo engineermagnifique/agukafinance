@@ -1,6 +1,3 @@
-import path from "node:path";
-import fs from "node:fs/promises";
-import crypto from "node:crypto";
 import { NextResponse } from "next/server";
 import { createLead } from "@/lib/leads";
 import { attachmentMaxBytes } from "@/lib/site-config";
@@ -16,8 +13,6 @@ const REQUIRED_FIELDS = [
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const ALLOWED_ATTACHMENT_TYPES = new Set(["application/pdf", "image/png", "image/jpeg"]);
-const ALLOWED_ATTACHMENT_EXTENSIONS = { "application/pdf": ".pdf", "image/png": ".png", "image/jpeg": ".jpg" };
-const uploadsDir = path.join(process.cwd(), "data", "uploads");
 
 function clean(value, limit = 1000) {
   if (typeof value !== "string") return "";
@@ -43,9 +38,9 @@ async function verifyCaptcha(token) {
   }
 }
 
-async function saveAttachment(file) {
+async function readAttachment(file) {
   if (!file || typeof file.arrayBuffer !== "function" || file.size === 0) {
-    return { path: null, name: null };
+    return { data: null, name: null, type: null };
   }
 
   if (!ALLOWED_ATTACHMENT_TYPES.has(file.type)) {
@@ -55,13 +50,8 @@ async function saveAttachment(file) {
     throw new Error("Attachments must be 5MB or smaller.");
   }
 
-  await fs.mkdir(uploadsDir, { recursive: true });
-  const extension = ALLOWED_ATTACHMENT_EXTENSIONS[file.type];
-  const storedName = `${Date.now()}-${crypto.randomBytes(8).toString("hex")}${extension}`;
   const buffer = Buffer.from(await file.arrayBuffer());
-  await fs.writeFile(path.join(uploadsDir, storedName), buffer);
-
-  return { path: storedName, name: clean(file.name, 200) };
+  return { data: buffer, name: clean(file.name, 200), type: file.type };
 }
 
 export async function POST(request) {
@@ -125,15 +115,16 @@ export async function POST(request) {
   }
 
   try {
-    const attachment = await saveAttachment(form.get("attachment"));
-    data.attachmentPath = attachment.path;
+    const attachment = await readAttachment(form.get("attachment"));
+    data.attachmentData = attachment.data;
     data.attachmentName = attachment.name;
+    data.attachmentType = attachment.type;
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
 
   try {
-    createLead(data);
+    await createLead(data);
   } catch (error) {
     console.error("[consultation-request] failed to save lead", error);
     return NextResponse.json(

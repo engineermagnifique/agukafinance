@@ -19,9 +19,9 @@ export default async function DashboardLayout({ children }) {
     redirect("/dashboard/login");
   }
 
-  const leadCounts = countLeadsByStatus();
+  const [leadCounts, stats] = await Promise.all([countLeadsByStatus(), getVisitorStats()]);
   const openLeads = leadCounts.new + leadCounts.contacted + leadCounts.in_progress;
-  const visitorsToday = getVisitorStats().today.visitors;
+  const visitorsToday = stats.today.visitors;
 
   const badges = {
     "/dashboard/clients": openLeads || null,

@@ -24,7 +24,7 @@ function trendFrom(current, previous) {
 export default async function VisitorsPage({ searchParams }) {
   const params = await searchParams;
   const range = VISITOR_RANGES.includes(params?.range) ? params.range : "7d";
-  const stats = getVisitorStats({ range });
+  const stats = await getVisitorStats({ range });
   const hasVisits = stats.totals.views > 0;
   const visitorSparkline = stats.daily.map((d) => ({ value: d.visitors }));
   const viewSparkline = stats.daily.map((d) => ({ value: d.views }));

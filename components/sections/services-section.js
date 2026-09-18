@@ -20,8 +20,8 @@ const decorBlobs = [
   },
 ];
 
-export default function ServicesSection() {
-  const services = listActiveServices();
+export default async function ServicesSection() {
+  const services = await listActiveServices();
 
   return (
     <ConsultationModalProvider>
@@ -37,11 +37,11 @@ export default function ServicesSection() {
             </h2>
           </Reveal>
 
-          <div className="mx-auto mt-12 flex max-w-5xl flex-wrap justify-center gap-4">
+          <div className="mx-auto mt-12 flex max-w-5xl flex-wrap justify-center gap-4 xl:max-w-7xl">
             {services.map((service, index) => (
               <div
                 key={service.id}
-                className="grow shrink basis-full sm:basis-[calc(50%-0.5rem)] lg:basis-[calc(33.333%-0.667rem)]"
+                className="shrink-0 basis-full sm:basis-[calc(50%-0.5rem)] lg:basis-[calc(33.333%-0.667rem)] xl:basis-[calc(20%-0.8rem)]"
               >
                 <ServiceCard service={service} index={index} delay={0.05 + index * 0.1} />
               </div>

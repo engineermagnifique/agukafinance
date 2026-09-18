@@ -9,8 +9,8 @@ import { deleteServiceAction, toggleServiceActiveAction, moveServiceAction } fro
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Services" };
 
-export default function ServicesPage() {
-  const services = listServices();
+export default async function ServicesPage() {
+  const services = await listServices();
 
   return (
     <div className="flex flex-col gap-6">

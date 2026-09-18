@@ -8,7 +8,7 @@ export const metadata = { title: "Edit service" };
 
 export default async function EditServicePage({ params }) {
   const { id } = await params;
-  const service = getService(Number(id));
+  const service = await getService(Number(id));
   if (!service) notFound();
 
   return (

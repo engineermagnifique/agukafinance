@@ -34,14 +34,18 @@ function trendFrom(current, previous) {
 }
 
 export default async function DashboardOverviewPage() {
-  const leadCounts = countLeadsByStatus();
+  const [leadCounts, recentLeadsAll, stats, services, subscribers] = await Promise.all([
+    countLeadsByStatus(),
+    listLeads(),
+    getVisitorStats({ range: "7d" }),
+    listServices(),
+    listSubscribers(),
+  ]);
   const totalLeads = Object.values(leadCounts).reduce((a, b) => a + b, 0);
-  const recentLeads = listLeads().slice(0, 5);
-  const stats = getVisitorStats({ range: "7d" });
-  const services = listServices();
+  const recentLeads = recentLeadsAll.slice(0, 5);
   const activeServices = services.filter((s) => s.isActive).length;
   const hiddenServices = services.length - activeServices;
-  const subscriberCount = listSubscribers().length;
+  const subscriberCount = subscribers.length;
 
   const visitorSparkline = stats.daily.map((d) => ({ value: d.visitors }));
   const viewSparkline = stats.daily.map((d) => ({ value: d.views }));

@@ -32,7 +32,7 @@ export async function createServiceAction(formData) {
   if (!data.title || !data.description) {
     throw new Error("Title and description are required.");
   }
-  createService(data);
+  await createService(data);
   redirect("/dashboard/services");
 }
 
@@ -42,25 +42,25 @@ export async function updateServiceAction(formData) {
   if (!data.title || !data.description) {
     throw new Error("Title and description are required.");
   }
-  updateService(id, data);
+  await updateService(id, data);
   redirect("/dashboard/services");
 }
 
 export async function deleteServiceAction(formData) {
   const id = Number(formData.get("id"));
-  deleteService(id);
+  await deleteService(id);
 }
 
 export async function toggleServiceActiveAction(formData) {
   const id = Number(formData.get("id"));
   const isActive = formData.get("isActive") === "1";
-  const service = getService(id);
+  const service = await getService(id);
   if (!service) return;
-  updateService(id, { ...service, isActive });
+  await updateService(id, { ...service, isActive });
 }
 
 export async function moveServiceAction(formData) {
   const id = Number(formData.get("id"));
   const direction = formData.get("direction") === "up" ? "up" : "down";
-  moveService(id, direction);
+  await moveService(id, direction);
 }

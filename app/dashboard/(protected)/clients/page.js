@@ -31,7 +31,7 @@ export default async function ClientsPage({ searchParams }) {
   const q = typeof params?.q === "string" ? params.q.trim() : "";
   const sort = typeof params?.sort === "string" ? params.sort : "created_at";
   const dir = params?.dir === "asc" ? "asc" : "desc";
-  const leads = listLeads({ status, q: q || undefined, sort, dir });
+  const leads = await listLeads({ status, q: q || undefined, sort, dir });
 
   function sortHref(columnKey) {
     const nextDir = sort === columnKey && dir === "asc" ? "desc" : "asc";

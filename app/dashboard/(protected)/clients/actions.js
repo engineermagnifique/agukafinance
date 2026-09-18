@@ -9,7 +9,7 @@ export async function updateLeadStatusAction(formData) {
   if (!LEAD_STATUSES.includes(status)) {
     throw new Error("Invalid status.");
   }
-  updateLeadStatus(id, status);
+  await updateLeadStatus(id, status);
   redirect(`/dashboard/clients/${id}`);
 }
 
@@ -20,6 +20,6 @@ export async function addLeadNoteAction(formData) {
   if (!note) {
     throw new Error("Note is required.");
   }
-  addLeadNote(id, note, nextFollowUpAt);
+  await addLeadNote(id, note, nextFollowUpAt);
   redirect(`/dashboard/clients/${id}`);
 }

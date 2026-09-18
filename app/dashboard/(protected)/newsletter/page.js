@@ -6,8 +6,8 @@ import Reveal from "@/components/ui/reveal";
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Newsletter" };
 
-export default function NewsletterPage() {
-  const subscribers = listSubscribers();
+export default async function NewsletterPage() {
+  const subscribers = await listSubscribers();
   const rows = subscribers.map((subscriber) => ({
     email: subscriber.email,
     subscribed: formatDate(subscriber.created_at),

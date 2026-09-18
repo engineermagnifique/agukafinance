@@ -31,7 +31,7 @@ export async function POST(request) {
   }
 
   try {
-    subscribeEmail(email);
+    await subscribeEmail(email);
   } catch (error) {
     console.error("[newsletter] failed to save subscriber", error);
     return NextResponse.json(

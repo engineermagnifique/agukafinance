@@ -84,7 +84,7 @@ export default function HeroSection() {
         animate={loaded ? "visible" : "hidden"}
         variants={staggerContainer}
         style={{ opacity: contentOpacity }}
-        className="relative mx-auto w-full max-w-7xl px-6 py-16 sm:py-20 lg:px-10"
+        className="relative mx-auto w-full max-w-7xl px-6 pb-16 pt-24 sm:pb-20 sm:pt-32 lg:px-10"
       >
         <div className="max-w-[680px]">
           <motion.span

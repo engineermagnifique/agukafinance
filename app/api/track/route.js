@@ -24,7 +24,7 @@ export async function POST(request) {
   }
 
   try {
-    recordPageView({
+    await recordPageView({
       path,
       referrer,
       visitorId,

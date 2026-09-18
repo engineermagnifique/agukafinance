@@ -8,9 +8,9 @@ export const metadata = { title: "Client detail" };
 
 export default async function ClientDetailPage({ params }) {
   const { id } = await params;
-  const lead = getLead(Number(id));
+  const lead = await getLead(Number(id));
   if (!lead) notFound();
-  const events = listLeadEvents(lead.id);
+  const events = await listLeadEvents(lead.id);
 
   return (
     <div className="flex flex-col gap-6">
@@ -90,12 +90,12 @@ export default async function ClientDetailPage({ params }) {
                 <dd className="text-ink">{lead.message}</dd>
               </div>
             )}
-            {lead.attachment_path && (
+            {lead.attachment_name && (
               <div>
                 <dt className="text-xs font-semibold uppercase text-muted">Attachment</dt>
                 <dd className="text-ink">
                   <a
-                    href={`/api/dashboard/attachments/${lead.attachment_path}`}
+                    href={`/api/dashboard/attachments/${lead.id}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-brand hover:text-brand-dark"
