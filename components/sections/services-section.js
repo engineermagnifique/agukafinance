@@ -33,12 +33,8 @@ export default function ServicesSection() {
           <Reveal className="mx-auto max-w-2xl text-center">
             <Eyebrow align="center">HOW WE CAN HELP</Eyebrow>
             <h2 className="mt-3 text-[clamp(30px,4vw,49px)] font-bold leading-[1.13] text-navy">
-              Financial solutions for every stage of life
+              Insurance, Tax &amp; Mortgage Support
             </h2>
-            <p className="mt-3 leading-relaxed text-muted">
-              One trusted place to protect what you have, plan what comes
-              next and move forward with confidence.
-            </p>
           </Reveal>
 
           <div className="mx-auto mt-12 flex max-w-5xl flex-wrap justify-center gap-4">

@@ -84,6 +84,27 @@ export default async function ClientDetailPage({ params }) {
                 <dd className="text-ink">{lead.tax_support}</dd>
               </div>
             )}
+            {lead.message && (
+              <div>
+                <dt className="text-xs font-semibold uppercase text-muted">Message</dt>
+                <dd className="text-ink">{lead.message}</dd>
+              </div>
+            )}
+            {lead.attachment_path && (
+              <div>
+                <dt className="text-xs font-semibold uppercase text-muted">Attachment</dt>
+                <dd className="text-ink">
+                  <a
+                    href={`/api/dashboard/attachments/${lead.attachment_path}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-brand hover:text-brand-dark"
+                  >
+                    {lead.attachment_name || "Download file"}
+                  </a>
+                </dd>
+              </div>
+            )}
           </dl>
         </Reveal>
 

@@ -37,6 +37,61 @@ export default function TermsOfServicePage() {
           </div>
 
           <div>
+            <h2 className="text-lg font-semibold text-navy">Company Disclaimer</h2>
+            <p className="mt-2">
+              {siteConfig.name} is an independent insurance and financial
+              services support limited liability company. AGUKA is not a
+              bank, lender, depository financial institution, mortgage
+              broker, or insurance carrier. AGUKA does not directly fund
+              loans, make credit decisions, underwrite insurance, issue
+              insurance policies, or pay insurance claims.
+            </p>
+            <p className="mt-3">
+              Mortgage loan origination services are provided by a licensed
+              mortgage loan originator through and under the supervision of
+              an approved sponsoring mortgage broker or lender. All mortgage
+              applications, products, interest rates, terms, disclosures,
+              underwriting decisions, approvals, and closing services are
+              provided or managed through the sponsoring mortgage company and
+              applicable third parties. Submitting an inquiry or application
+              does not guarantee loan approval or constitute a commitment to
+              lend. Loan programs, rates, terms, and eligibility requirements
+              are subject to change and depend on the applicant&rsquo;s
+              qualifications and applicable underwriting guidelines.
+            </p>
+            <p className="mt-3">
+              Insurance services are provided through appropriately licensed
+              insurance producers and authorized insurance carriers. AGUKA
+              may assist clients with exploring coverage options and
+              completing applications but does not make final underwriting
+              decisions, determine premiums, guarantee coverage, issue
+              policies, or pay claims. Insurance products and availability
+              vary by state and carrier. All coverage is subject to
+              underwriting, policy terms, conditions, limitations, and
+              exclusions. Coverage is not effective or bound until confirmed
+              in writing by the applicable insurance carrier or its
+              authorized representative.
+            </p>
+            <p className="mt-3">
+              AFG does not provide advice or recommendations regarding
+              securities, stocks, mutual funds, or other investment products
+              unless a separate client relationship has been established
+              with a properly licensed investment adviser and all required
+              disclosures have been provided. Any such investment advisory
+              services are offered solely through the applicable licensed
+              entity and are subject to separate agreements and regulatory
+              requirements.
+            </p>
+            <p className="mt-3">
+              Services are offered only where properly licensed and
+              authorized. Information provided by AGUKA is for general
+              educational and informational purposes and should not be
+              considered a guarantee of financing, insurance coverage,
+              rates, premiums, benefits, or financial results.
+            </p>
+          </div>
+
+          <div>
             <h2 className="text-lg font-semibold text-navy">Use of This Site</h2>
             <p className="mt-2">
               You agree to use this site only for lawful purposes and not to

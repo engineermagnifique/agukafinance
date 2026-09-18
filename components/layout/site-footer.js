@@ -19,8 +19,7 @@ export default function SiteFooter() {
         <div className="flex flex-col items-start gap-4">
           <Logo size="footer" />
           <p className="max-w-xs text-[13px] leading-relaxed text-white/50">
-            Building and protecting what matters most through honest
-            guidance and personal service.
+            {siteConfig.tagline}.
           </p>
           <div className="flex items-center gap-3">
             {socialLinks.map((social) => {
@@ -86,6 +85,9 @@ export default function SiteFooter() {
           </h4>
           <p className="leading-relaxed text-white/50">
             NPN: {siteConfig.license.npn}
+          </p>
+          <p className="leading-relaxed text-white/50">
+            PTIN: {siteConfig.license.ptin}
           </p>
           <p className="leading-relaxed text-white/50">
             {siteConfig.license.agent}

@@ -92,7 +92,7 @@ export default function HeroSection() {
             className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-[12px] font-semibold text-white/85 backdrop-blur-sm"
           >
             <Sparkles size={13} className="text-gold" />
-            Insurance &bull; Mortgage &bull; Tax Services
+            Insurances. Taxes. Financial Planning Solutions
           </motion.span>
 
           <motion.h1
@@ -113,8 +113,8 @@ export default function HeroSection() {
             variants={fadeUp}
             className="mt-6 max-w-[480px] text-sm leading-[1.75] text-white/75 sm:text-base"
           >
-            Trusted Insurance, Mortgage, and Tax Services delivered with
-            clarity, care, and honest guidance.
+            Personalized trusted insurance and financial product strategies
+            delivered with care, transparency and honesty.
           </motion.p>
 
           <motion.div
@@ -130,20 +130,11 @@ export default function HeroSection() {
                 aria-hidden="true"
                 className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover/cta:translate-x-full"
               />
-              <span className="relative py-2.5">Get Started Today</span>
+              <span className="relative py-2.5">Check Quote Today</span>
               <span className="relative grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white text-brand transition-transform duration-300 group-hover/cta:translate-x-0.5">
                 <ArrowRight size={16} />
               </span>
             </Link>
-            <a
-              href="#services"
-              className="group inline-flex items-center gap-1.5 text-sm font-semibold transition-colors hover:text-gold"
-            >
-              Explore Our Services
-              <span className="transition-transform group-hover:translate-x-1">
-                →
-              </span>
-            </a>
           </motion.div>
         </div>
       </motion.div>
@@ -157,11 +148,8 @@ export default function HeroSection() {
         <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#fff3e8] text-brand">
           <ShieldCheck size={19} />
         </span>
-        <span className="leading-tight">
-          <span className="block text-lg font-bold text-navy">10+ Years</span>
-          <span className="block text-[11px] text-muted">
-            Serving Texas families
-          </span>
+        <span className="max-w-[160px] text-[13px] font-bold leading-tight text-navy">
+          Backed by 5+ years of professional experience
         </span>
       </motion.div>
     </section>

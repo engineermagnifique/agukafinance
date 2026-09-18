@@ -1,8 +1,6 @@
 import HeroSection from "@/components/sections/hero-section";
-import HighlightsStrip from "@/components/sections/highlights-strip";
 import ServicesSection from "@/components/sections/services-section";
 import TrustBand from "@/components/sections/trust-band";
-import TestimonialsSection from "@/components/sections/testimonials-section";
 import ContactSection from "@/components/sections/contact-section";
 import NewsletterSection from "@/components/sections/newsletter-section";
 import { siteConfig } from "@/lib/site-config";
@@ -29,7 +27,7 @@ const jsonLd = {
     streetAddress: siteConfig.address.line1,
     addressLocality: "Irving",
     addressRegion: "TX",
-    postalCode: "75039",
+    postalCode: "75062",
     addressCountry: "US",
   },
   areaServed: "US",
@@ -44,10 +42,8 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <HeroSection />
-      <HighlightsStrip />
       <ServicesSection />
       <TrustBand />
-      <TestimonialsSection />
       <ContactSection />
       <NewsletterSection />
     </>

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ShieldCheck, Handshake, Award, HeartHandshake, ArrowRight } from "lucide-react";
+import { ShieldCheck, Handshake, Award, Wallet, ArrowRight } from "lucide-react";
 import PageHero from "@/components/ui/page-hero";
 import Reveal from "@/components/ui/reveal";
 import Eyebrow from "@/components/ui/eyebrow";
@@ -16,7 +16,7 @@ const valueIcons = {
   Integrity: ShieldCheck,
   Transparency: Handshake,
   Professionalism: Award,
-  "Heart of Service": HeartHandshake,
+  Affordability: Wallet,
 };
 
 export default function AboutPage() {
@@ -32,7 +32,7 @@ export default function AboutPage() {
       <section className="bg-cream">
         <div className="mx-auto max-w-3xl px-6 py-16 text-center sm:py-20 lg:px-10">
           <Reveal>
-            <Eyebrow align="center">OUR MISSION</Eyebrow>
+            <Eyebrow align="center">WHO WE ARE</Eyebrow>
             <h2 className="mt-3 text-[clamp(26px,3.6vw,36px)] font-bold leading-[1.2] text-navy">
               Honest guidance, without the sales pressure
             </h2>
@@ -41,6 +41,31 @@ export default function AboutPage() {
               buying a home, or planning ahead for tax season, we take the
               time to explain your options clearly so you can make decisions
               with confidence.
+            </p>
+          </Reveal>
+        </div>
+
+        <div className="mx-auto grid max-w-5xl gap-6 px-6 pb-16 sm:grid-cols-2 sm:pb-20 lg:px-10">
+          <Reveal
+            delay={0.05}
+            className="rounded-xl border border-gray-100 bg-white p-7 text-center sm:text-left"
+          >
+            <Eyebrow align="center">OUR VISION</Eyebrow>
+            <p className="mt-3 leading-relaxed text-ink">
+              To become the most trusted and reliable independent one-stop-hub
+              for affordable insurance and financial products for the
+              American communities we serve.
+            </p>
+          </Reveal>
+          <Reveal
+            delay={0.1}
+            className="rounded-xl border border-gray-100 bg-white p-7 text-center sm:text-left"
+          >
+            <Eyebrow align="center">OUR MISSION</Eyebrow>
+            <p className="mt-3 leading-relaxed text-ink">
+              To provide transparent, and/or educate, affordable insurance and
+              financial strategies that equip families and small businesses
+              with the means to accelerate their financial growth.
             </p>
           </Reveal>
         </div>

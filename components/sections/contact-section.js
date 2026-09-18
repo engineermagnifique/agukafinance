@@ -50,8 +50,9 @@ export default function ContactSection() {
             Start with a simple conversation
           </h2>
           <p className="mt-3 max-w-md leading-relaxed text-muted">
-            Tell us what you&rsquo;re working toward. We&rsquo;ll listen,
-            answer your questions and help identify a practical next step.
+            Give us a call or send us a text message or fill out the free
+            consultation form, our representative will be more than happy to
+            help.
           </p>
 
           <dl className="mt-8 space-y-6">
