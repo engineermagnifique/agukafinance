@@ -1,6 +1,7 @@
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { siteConfig } from "@/lib/site-config";
+import CustomCursor from "@/components/ui/custom-cursor";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -70,6 +71,7 @@ export default function RootLayout({ children }) {
           Skip to content
         </a>
         {children}
+        <CustomCursor />
       </body>
     </html>
   );
