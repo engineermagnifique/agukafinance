@@ -27,10 +27,3 @@ html {
   outline: 3px solid var(--color-gold);
   outline-offset: 3px;
 }
-
-/* Custom cursor: only hide the system pointer once a fine-pointer, non-reduced-motion
-   visitor's cursor is actually rendered — see components/ui/custom-cursor.js. */
-.has-custom-cursor,
-.has-custom-cursor * {
-  cursor: none !important;
-}
