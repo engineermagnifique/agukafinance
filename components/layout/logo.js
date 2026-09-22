@@ -6,8 +6,8 @@ import { siteConfig } from "@/lib/site-config";
 export default function Logo({ size = "header" }) {
   const dimensions =
     size === "footer"
-      ? { width: 240, height: 92, className: "w-[200px] sm:w-[240px]" }
-      : { width: 150, height: 58, className: "w-[110px] sm:w-[140px]" };
+      ? { width: 240, height: 94, className: "w-[200px] sm:w-[240px]" }
+      : { width: 150, height: 59, className: "w-[110px] sm:w-[140px]" };
 
   return (
     <Link

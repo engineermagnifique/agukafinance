@@ -7,8 +7,9 @@ import TrustBand from "@/components/sections/trust-band";
 import { siteConfig, values } from "@/lib/site-config";
 
 export const metadata = {
-  title: "About Us",
-  description: `Learn about ${siteConfig.name} and the values behind our insurance, mortgage and tax services support.`,
+  title: "About AGUKA Financial Group LLC",
+  description:
+    "AGUKA Financial Group LLC (“AFG”) is an independent insurance and financial solutions support firm that puts the client's interest first.",
   alternates: { canonical: "/about" },
 };
 
@@ -24,7 +25,7 @@ export default function AboutPage() {
     <>
       <PageHero
         eyebrow="ABOUT US"
-        title={`About ${siteConfig.shortName}`}
+        title="About AGUKA Financial Group LLC"
         subtitle={siteConfig.tagline}
         breadcrumb={[{ label: "Home", href: "/" }, { label: "About" }]}
       />
@@ -32,15 +33,12 @@ export default function AboutPage() {
       <section className="bg-cream">
         <div className="mx-auto max-w-3xl px-6 py-16 text-center sm:py-20 lg:px-10">
           <Reveal>
-            <Eyebrow align="center">WHO WE ARE</Eyebrow>
-            <h2 className="mt-3 text-[clamp(26px,3.6vw,36px)] font-bold leading-[1.2] text-navy">
-              Honest guidance, without the sales pressure
+            <Eyebrow align="center">ABOUT AGUKA FINANCIAL GROUP LLC</Eyebrow>
+            <h2 className="mt-3 text-[clamp(20px,2.6vw,28px)] font-bold leading-[1.2] text-navy">
+              AGUKA Financial Group LLC (“AFG”) is an independent insurance and financial solutions support firm that puts the client&apos;s interest first.
             </h2>
             <p className="mx-auto mt-4 leading-relaxed text-muted">
-              {siteConfig.description} Whether you are protecting your family,
-              buying a home, or planning ahead for tax season, we take the
-              time to explain your options clearly so you can make decisions
-              with confidence.
+              It was created to help individuals, families, and small businesses across the American communities we serve to navigate insurance and financial growth decisions with confidence.
             </p>
           </Reveal>
         </div>
@@ -50,7 +48,7 @@ export default function AboutPage() {
             delay={0.05}
             className="rounded-xl border border-gray-100 bg-white p-7 text-center sm:text-left"
           >
-            <Eyebrow align="center">OUR VISION</Eyebrow>
+            <Eyebrow align="center">VISION</Eyebrow>
             <p className="mt-3 leading-relaxed text-ink">
               To become the most trusted and reliable independent one-stop-hub
               for affordable insurance and financial products for the
@@ -61,7 +59,7 @@ export default function AboutPage() {
             delay={0.1}
             className="rounded-xl border border-gray-100 bg-white p-7 text-center sm:text-left"
           >
-            <Eyebrow align="center">OUR MISSION</Eyebrow>
+            <Eyebrow align="center">MISSION</Eyebrow>
             <p className="mt-3 leading-relaxed text-ink">
               To provide transparent, and/or educate, affordable insurance and
               financial strategies that equip families and small businesses
@@ -74,13 +72,17 @@ export default function AboutPage() {
       <section className="bg-white">
         <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20 lg:px-10">
           <Reveal className="mx-auto max-w-2xl text-center">
-            <Eyebrow align="center">WHAT WE STAND FOR</Eyebrow>
+            <Eyebrow align="center">MOTTO</Eyebrow>
             <h2 className="mt-3 text-[clamp(26px,3.6vw,36px)] font-bold leading-[1.2] text-navy">
-              Our values
+              Build &amp; Protect Wealth at an Affordable Cost.
             </h2>
           </Reveal>
 
-          <div className="mx-auto mt-10 grid max-w-4xl grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <p className="mt-10 text-center text-[12px] font-semibold uppercase tracking-widest text-muted">
+            Core Values
+          </p>
+
+          <div className="mx-auto mt-4 grid max-w-4xl grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {values.map((value, index) => {
               const Icon = valueIcons[value] || ShieldCheck;
               return (
@@ -109,10 +111,10 @@ export default function AboutPage() {
           className="mx-auto flex max-w-3xl flex-col items-center gap-5 px-6 py-16 text-center sm:py-20 lg:px-10"
         >
           <h2 className="text-[clamp(24px,3.2vw,32px)] font-bold leading-[1.2] text-navy">
-            Ready to talk through your options?
+            Our Pledge
           </h2>
-          <p className="max-w-lg text-sm leading-relaxed text-muted">
-            Reach out for a free, no-pressure consultation with our team.
+          <p className="max-w-2xl leading-relaxed text-muted">
+            We are committed to affordability, honesty, transparency, and professionalism. Our goal is to give every client clear, honest guidance that helps reduce costs and supports long-term financial stability — always presented as options for your consideration, with the final decision resting with you.
           </p>
           <Link
             href="/#contact"
