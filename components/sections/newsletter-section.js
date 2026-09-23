@@ -1,13 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Mail } from "lucide-react";
 import Eyebrow from "@/components/ui/eyebrow";
+import Altcha from "@/components/ui/altcha";
 
 export default function NewsletterSection() {
   const [email, setEmail] = useState("");
   const [website, setWebsite] = useState("");
+  const [captchaToken, setCaptchaToken] = useState("");
+  const altchaRef = useRef(null);
   const [status, setStatus] = useState("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -20,7 +23,7 @@ export default function NewsletterSection() {
       const response = await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, website }),
+        body: JSON.stringify({ email, website, altcha: captchaToken }),
       });
 
       const result = await response.json();
@@ -31,6 +34,8 @@ export default function NewsletterSection() {
 
       setStatus("success");
       setEmail("");
+      setCaptchaToken("");
+      altchaRef.current?.reset();
     } catch (error) {
       setStatus("error");
       setErrorMessage(
@@ -115,6 +120,12 @@ export default function NewsletterSection() {
                 </span>
               </button>
             </form>
+
+            <Altcha
+              ref={altchaRef}
+              onChange={setCaptchaToken}
+              className="[&_altcha-widget]:mx-auto"
+            />
 
             {status === "success" && (
               <motion.p

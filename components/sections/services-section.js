@@ -37,15 +37,34 @@ export default async function ServicesSection() {
             </h2>
           </Reveal>
 
-          <div className="mx-auto mt-12 flex max-w-5xl flex-wrap justify-center gap-4 xl:max-w-7xl">
-            {services.map((service, index) => (
-              <div
-                key={service.id}
-                className="shrink-0 basis-full sm:basis-[calc(50%-0.5rem)] lg:basis-[calc(33.333%-0.667rem)] xl:basis-[calc(20%-0.8rem)]"
-              >
-                <ServiceCard service={service} index={index} delay={0.05 + index * 0.1} />
-              </div>
-            ))}
+          <div className="relative mx-auto mt-16 max-w-5xl">
+            <div
+              aria-hidden="true"
+              className="absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-gray-300 to-transparent md:block"
+            />
+            <div className="flex flex-col gap-10 md:gap-16">
+              {services.map((service, index) => {
+                const isLeft = index % 2 === 0;
+                return (
+                  <div
+                    key={service.id}
+                    className="relative md:grid md:grid-cols-2 md:items-center md:gap-x-12"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="absolute left-1/2 top-1/2 z-10 hidden h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-brand bg-cream md:block"
+                    />
+                    <div className={isLeft ? "md:pr-14" : "md:col-start-2 md:pl-14"}>
+                      <ServiceCard
+                        service={service}
+                        index={index}
+                        delay={0.05 + index * 0.1}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>

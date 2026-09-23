@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { verifyAltchaPayload } from "@/lib/altcha";
 import { createLead } from "@/lib/leads";
 import { attachmentMaxBytes } from "@/lib/site-config";
 
@@ -17,25 +18,6 @@ const ALLOWED_ATTACHMENT_TYPES = new Set(["application/pdf", "image/png", "image
 function clean(value, limit = 1000) {
   if (typeof value !== "string") return "";
   return value.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, "").trim().slice(0, limit);
-}
-
-async function verifyCaptcha(token) {
-  const secret = process.env.RECAPTCHA_SECRET_KEY;
-  if (!secret) return true; // No CAPTCHA configured — skip verification.
-  if (!token) return false;
-
-  try {
-    const response = await fetch("https://www.google.com/recaptcha/api/siteverify", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({ secret, response: token }),
-    });
-    const result = await response.json();
-    return result.success === true;
-  } catch (error) {
-    console.error("[consultation-request] captcha verification failed", error);
-    return false;
-  }
 }
 
 async function readAttachment(file) {
@@ -69,8 +51,8 @@ export async function POST(request) {
     return NextResponse.json({ ok: true });
   }
 
-  const captchaToken = get("captchaToken", 2000);
-  const captchaOk = await verifyCaptcha(captchaToken);
+  const captchaPayload = get("altcha", 2000);
+  const captchaOk = await verifyAltchaPayload(captchaPayload);
   if (!captchaOk) {
     return NextResponse.json(
       { error: "We could not verify you're human. Please try again." },

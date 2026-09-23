@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { verifyAltchaPayload } from "@/lib/altcha";
 import { subscribeEmail } from "@/lib/newsletter";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -19,6 +20,14 @@ export async function POST(request) {
   // Honeypot: bots fill hidden fields, humans never see them.
   if (clean(body.website, 200) !== "") {
     return NextResponse.json({ ok: true });
+  }
+
+  const captchaOk = await verifyAltchaPayload(clean(body.altcha, 2000));
+  if (!captchaOk) {
+    return NextResponse.json(
+      { error: "We could not verify you're human. Please try again." },
+      { status: 400 }
+    );
   }
 
   const email = clean(body.email, 160);

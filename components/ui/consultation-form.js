@@ -1,11 +1,11 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { Paperclip, X } from "lucide-react";
 import Eyebrow from "@/components/ui/eyebrow";
-import Recaptcha, { recaptchaEnabled } from "@/components/ui/recaptcha";
+import Altcha from "@/components/ui/altcha";
 import {
   attachmentAccept,
   attachmentMaxBytes,
@@ -67,6 +67,7 @@ export default function ConsultationForm({ initialService = null, className }) {
   const [attachment, setAttachment] = useState(null);
   const [attachmentError, setAttachmentError] = useState("");
   const [captchaToken, setCaptchaToken] = useState("");
+  const altchaRef = useRef(null);
   const [status, setStatus] = useState("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -150,7 +151,7 @@ export default function ConsultationForm({ initialService = null, className }) {
     formData.set("message", values.message);
     formData.set("website", values.website);
     formData.set("consent", String(values.consent));
-    formData.set("captchaToken", captchaToken);
+    formData.set("altcha", captchaToken);
     if (attachment) formData.set("attachment", attachment);
 
     try {
@@ -169,6 +170,7 @@ export default function ConsultationForm({ initialService = null, className }) {
       setValues(initialState);
       setAttachment(null);
       setCaptchaToken("");
+      altchaRef.current?.reset();
     } catch (error) {
       setStatus("error");
       setErrorMessage(
@@ -416,7 +418,7 @@ export default function ConsultationForm({ initialService = null, className }) {
         </span>
       </label>
 
-      {recaptchaEnabled && <Recaptcha onChange={handleCaptchaChange} />}
+      <Altcha ref={altchaRef} onChange={handleCaptchaChange} className="self-start" />
 
       <button
         type="submit"

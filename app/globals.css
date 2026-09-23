@@ -27,3 +27,16 @@ html {
   outline: 3px solid var(--color-gold);
   outline-offset: 3px;
 }
+
+altcha-widget {
+  --altcha-color-primary: var(--color-brand);
+  --altcha-color-primary-content: #fff;
+  --altcha-color-base: var(--color-cream);
+  --altcha-color-base-content: var(--color-ink);
+  --altcha-color-neutral: var(--color-muted);
+  --altcha-border-radius: 3px;
+  --altcha-border-color: #d1d5db;
+  --altcha-max-width: 100%;
+  font-family: var(--font-sans);
+  font-size: 13px;
+}
