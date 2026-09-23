@@ -87,7 +87,7 @@ export default function ServiceCard({ service, index, delay }) {
             </span>
           </div>
           <h3 className="mt-5 text-xl font-semibold text-navy">{service.title}</h3>
-          <p className="mt-2 line-clamp-6 flex-1 text-[13px] leading-relaxed text-muted">
+          <p className="mt-2 line-clamp-6 flex-1 text-sm leading-relaxed text-gray-600">
             {service.description}
           </p>
 
@@ -118,7 +118,7 @@ export default function ServiceCard({ service, index, delay }) {
             {createElement(Icon, { size: 28 })}
           </div>
           <h3 className="mt-5 text-2xl font-bold text-navy">{service.title}</h3>
-          <p className="mt-3 text-sm leading-relaxed text-muted">{service.description}</p>
+          <p className="mt-3 text-sm leading-relaxed text-gray-600">{service.description}</p>
 
           {service.ctaType === "accordion" && service.accordionItems.length > 0 && (
             <ul className="mt-5 grid grid-cols-1 gap-2.5 border-t border-gray-100 pt-5 sm:grid-cols-2">

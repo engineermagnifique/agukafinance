@@ -7,6 +7,14 @@ import FloatingCircles from "@/components/ui/floating-circles";
 import ScrollTintOverlay from "@/components/ui/scroll-tint-overlay";
 import { listActiveServices } from "@/lib/services";
 
+function chunk(items, size) {
+  const groups = [];
+  for (let i = 0; i < items.length; i += size) {
+    groups.push(items.slice(i, i + size));
+  }
+  return groups;
+}
+
 const decorBlobs = [
   {
     range: [-40, 60],
@@ -28,7 +36,9 @@ export default async function ServicesSection() {
       <section id="services" className="relative scroll-mt-[100px] overflow-hidden bg-cream">
         <ScrollTintOverlay />
         <ParallaxDecor blobs={decorBlobs} />
-        <FloatingCircles />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-[560px] overflow-hidden">
+          <FloatingCircles />
+        </div>
         <div className="relative mx-auto max-w-7xl px-6 py-16 sm:py-24 lg:px-10">
           <Reveal className="mx-auto max-w-2xl text-center">
             <Eyebrow align="center">HOW WE CAN HELP</Eyebrow>
@@ -37,33 +47,50 @@ export default async function ServicesSection() {
             </h2>
           </Reveal>
 
-          <div className="relative mx-auto mt-16 max-w-5xl">
+          <div className="relative mx-auto mt-16 max-w-6xl">
             <div
               aria-hidden="true"
               className="absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-gray-300 to-transparent md:block"
             />
-            <div className="flex flex-col gap-10 md:gap-16">
-              {services.map((service, index) => {
-                const isLeft = index % 2 === 0;
-                return (
-                  <div
-                    key={service.id}
-                    className="relative md:grid md:grid-cols-2 md:items-center md:gap-x-12"
-                  >
+            <div className="flex flex-col gap-8 md:gap-12">
+              {chunk(services, 2).map((pair, rowIndex) => (
+                <div
+                  key={pair[0].id}
+                  className="relative grid gap-6 md:grid-cols-2 md:items-center md:gap-x-10"
+                >
+                  {pair.length === 2 && (
                     <span
                       aria-hidden="true"
                       className="absolute left-1/2 top-1/2 z-10 hidden h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-brand bg-cream md:block"
                     />
-                    <div className={isLeft ? "md:pr-14" : "md:col-start-2 md:pl-14"}>
+                  )}
+                  {pair.length === 1 ? (
+                    <div className="md:col-span-2 md:mx-auto md:w-1/2 md:pr-8">
                       <ServiceCard
-                        service={service}
-                        index={index}
-                        delay={0.05 + index * 0.1}
+                        service={pair[0]}
+                        index={rowIndex * 2}
+                        delay={0.05 + rowIndex * 2 * 0.1}
                       />
                     </div>
-                  </div>
-                );
-              })}
+                  ) : (
+                    pair.map((service, columnIndex) => {
+                      const index = rowIndex * 2 + columnIndex;
+                      return (
+                        <div
+                          key={service.id}
+                          className={columnIndex === 0 ? "md:pr-8" : "md:pl-8"}
+                        >
+                          <ServiceCard
+                            service={service}
+                            index={index}
+                            delay={0.05 + index * 0.1}
+                          />
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              ))}
             </div>
           </div>
         </div>

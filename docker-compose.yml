@@ -1,0 +1,23 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: aguka-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: aguka
+      MYSQL_USER: aguka
+      MYSQL_PASSWORD: agukapass
+      MYSQL_ROOT_PASSWORD: agukaroot
+    ports:
+      # Host port 3307 to avoid clashing with a MySQL install already using 3306.
+      - "3307:3306"
+    volumes:
+      - aguka_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-pagukaroot"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  aguka_mysql_data:

@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import { verifyAltchaPayload } from "@/lib/altcha";
 import { createLead } from "@/lib/leads";
-import { attachmentMaxBytes } from "@/lib/site-config";
+import { sendMail } from "@/lib/mailer";
+import { buildLeadEmailHtml, buildLeadEmailText } from "@/lib/lead-email";
+import { attachmentMaxBytes, siteConfig } from "@/lib/site-config";
 
 const REQUIRED_FIELDS = [
   "firstName",
@@ -105,12 +107,29 @@ export async function POST(request) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
 
-  try {
-    await createLead(data);
-  } catch (error) {
-    console.error("[consultation-request] failed to save lead", error);
+  const saved = await createLead(data)
+    .then(() => true)
+    .catch((error) => {
+      console.error("[consultation-request] failed to save lead", error);
+      return false;
+    });
+
+  const emailed = await sendMail({
+    to: siteConfig.email,
+    replyTo: data.email,
+    subject: `New consultation request — ${data.service}`,
+    text: buildLeadEmailText(data),
+    html: buildLeadEmailHtml(data),
+    attachments: data.attachmentData
+      ? [{ filename: data.attachmentName, content: data.attachmentData, contentType: data.attachmentType }]
+      : undefined,
+  });
+
+  // The lead only needs to reach us through one working channel — fail the
+  // request only if it made it through neither the database nor email.
+  if (!saved && !emailed) {
     return NextResponse.json(
-      { error: "We could not save your request. Please call us instead." },
+      { error: "We could not send your request. Please call us instead." },
       { status: 500 }
     );
   }

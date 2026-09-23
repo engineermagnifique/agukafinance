@@ -7,6 +7,10 @@ import { Quote } from "lucide-react";
 import dayImage from "@/public/images/hero-daylight.png";
 import Reveal from "@/components/ui/reveal";
 import Eyebrow from "@/components/ui/eyebrow";
+import TypewriterQuote from "@/components/ui/typewriter-quote";
+
+const MESSAGE =
+  "In the pursuit of your dreams, financial security, personal dignity, and family legacy, wealth creation and wealth protection go hand in hand. Whether you are building a career, growing a business, planning for retirement, creating generational wealth, or acquiring valuable assets, protecting those achievements is just as important as building them. Properly structured insurance coverage can serve as a vital shield, helping safeguard what matters most today while preserving the foundation of your legacy for generations to come.";
 
 export default function TrustBand() {
   const sectionRef = useRef(null);
@@ -48,15 +52,7 @@ export default function TrustBand() {
           />
 
           <blockquote className="mt-3 text-[clamp(15px,1.7vw,18px)] font-medium italic leading-[1.7] text-white/90">
-            In the pursuit of your dreams, financial security, personal
-            dignity, and family legacy, wealth creation and wealth protection
-            go hand in hand. Whether you are building a career, growing a
-            business, planning for retirement, creating generational wealth,
-            or acquiring valuable assets, protecting those achievements is
-            just as important as building them. Properly structured insurance
-            coverage can serve as a vital shield, helping safeguard what
-            matters most today while preserving the foundation of your legacy
-            for generations to come.
+            <TypewriterQuote text={MESSAGE} />
           </blockquote>
 
           <div className="mt-5 flex items-center gap-3 border-t border-white/15 pt-4">
