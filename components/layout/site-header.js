@@ -7,16 +7,20 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, Home, Info, Layers, Mail, Menu, X } from "lucide-react";
 import Logo from "@/components/layout/logo";
 import TopBar from "@/components/layout/top-bar";
+import LanguageSwitcher from "@/components/i18n/language-switcher";
+import { useI18n } from "@/components/i18n/language-provider";
+import { format } from "@/lib/i18n/config";
 import { navLinks, siteConfig } from "@/lib/site-config";
 import { scrollToContact } from "@/lib/scroll";
 
-const mobileIcons = { Home, About: Info, Services: Layers, "Contact Us": Mail };
+const mobileIcons = { home: Home, about: Info, services: Layers, contact: Mail };
 
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const panelRef = useRef(null);
   const pathname = usePathname();
+  const { t } = useI18n();
 
   function isActiveLink(href) {
     return href === "/" ? pathname === "/" : pathname?.startsWith(href);
@@ -71,8 +75,8 @@ export default function SiteHeader() {
         <Logo size="header" />
 
         <nav
-          aria-label="Primary"
-          className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-9 text-[14px] font-semibold tracking-wide text-navy/60 lg:flex"
+          aria-label={t.nav.primary}
+          className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-6 text-[14px] font-semibold tracking-wide text-navy/60 lg:flex xl:gap-9"
         >
           {navLinks.map((link) => {
             const isActive = isActiveLink(link.href);
@@ -84,7 +88,7 @@ export default function SiteHeader() {
                   isActive ? "text-navy" : "hover:text-navy"
                 }`}
               >
-                {link.label}
+                {t.nav[link.key]}
                 {isActive && (
                   <motion.span
                     layoutId="nav-indicator"
@@ -97,13 +101,18 @@ export default function SiteHeader() {
           })}
         </nav>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <LanguageSwitcher />
+
           <Link
             href="/?service=General%20Consultation#contact"
             onClick={scrollToContact}
-            className="group hidden items-center gap-3 rounded-full bg-brand py-1.5 pl-5 pr-1.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-dark lg:inline-flex"
+            aria-label={t.nav.getQuote}
+            title={t.nav.getQuote}
+            className="group hidden items-center gap-3 rounded-full bg-brand p-1.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-dark lg:inline-flex xl:pl-5"
           >
-            Get a Free Quote
+            {/* Icon-only between lg and xl so the centered nav has room for the language switcher. */}
+            <span className="hidden xl:inline">{t.nav.getQuote}</span>
             <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white text-brand transition-transform duration-300 group-hover:translate-x-0.5">
               <ArrowRight size={15} />
             </span>
@@ -112,7 +121,7 @@ export default function SiteHeader() {
           <button
             type="button"
             onClick={() => setOpen((prev) => !prev)}
-            aria-label={open ? "Close navigation" : "Open navigation"}
+            aria-label={open ? t.nav.closeNav : t.nav.openNav}
             aria-controls="mobile-nav"
             aria-expanded={open}
             className="grid h-10 w-10 place-items-center rounded-md text-navy transition-colors hover:bg-navy/5 lg:hidden"
@@ -137,7 +146,7 @@ export default function SiteHeader() {
             <motion.nav
               ref={panelRef}
               id="mobile-nav"
-              aria-label="Mobile primary"
+              aria-label={t.nav.mobilePrimary}
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
@@ -146,7 +155,7 @@ export default function SiteHeader() {
             >
               <div className="flex flex-col gap-1 px-4 py-5 text-navy">
                 {navLinks.map((link) => {
-                  const Icon = mobileIcons[link.label];
+                  const Icon = mobileIcons[link.key];
                   return (
                     <Link
                       key={link.href}
@@ -157,7 +166,7 @@ export default function SiteHeader() {
                       }`}
                     >
                       {Icon && <Icon size={17} className="text-brand" />}
-                      {link.label}
+                      {t.nav[link.key]}
                     </Link>
                   );
                 })}
@@ -170,13 +179,13 @@ export default function SiteHeader() {
                   }}
                   className="mt-3 rounded-[3px] bg-brand px-5 py-3.5 text-center text-sm font-semibold text-white"
                 >
-                  Schedule a Free Consultation
+                  {t.nav.scheduleConsultation}
                 </Link>
                 <a
                   href={siteConfig.phoneHref}
                   className="mt-1 px-2.5 py-2 text-sm font-medium text-muted"
                 >
-                  Call {siteConfig.phone}
+                  {format(t.nav.call, { phone: siteConfig.phone })}
                 </a>
               </div>
             </motion.nav>

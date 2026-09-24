@@ -5,8 +5,10 @@ import { motion } from "framer-motion";
 import { Mail } from "lucide-react";
 import Eyebrow from "@/components/ui/eyebrow";
 import Altcha from "@/components/ui/altcha";
+import { useI18n } from "@/components/i18n/language-provider";
 
 export default function NewsletterSection() {
+  const { t } = useI18n();
   const [email, setEmail] = useState("");
   const [website, setWebsite] = useState("");
   const [captchaToken, setCaptchaToken] = useState("");
@@ -29,7 +31,7 @@ export default function NewsletterSection() {
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.error || "Something went wrong.");
+        throw new Error(result.error || t.newsletter.genericError);
       }
 
       setStatus("success");
@@ -41,7 +43,7 @@ export default function NewsletterSection() {
       setErrorMessage(
         error instanceof Error
           ? error.message
-          : "We could not subscribe you. Please try again."
+          : t.newsletter.fallbackError
       );
     }
   }
@@ -66,14 +68,14 @@ export default function NewsletterSection() {
 
             <div>
               <Eyebrow align="center" tone="gold">
-                STAY INFORMED
+                {t.newsletter.eyebrow}
               </Eyebrow>
               <h2 className="mt-3 text-[clamp(26px,3.6vw,38px)] font-bold leading-[1.15]">
-                <span className="block">Stay updated in your inbox</span>
-                <span className="block">with AGUKA Financial</span>
+                <span className="block">{t.newsletter.titleLine1}</span>
+                <span className="block">{t.newsletter.titleLine2}</span>
               </h2>
               <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-white/70">
-                Stay informed with AGUKA Financial Group services.
+                {t.newsletter.subtitle}
               </p>
             </div>
 
@@ -82,13 +84,13 @@ export default function NewsletterSection() {
               className="mt-2 flex w-full max-w-md flex-col gap-3 sm:flex-row"
             >
               <label className="sr-only" htmlFor="newsletter-email">
-                Email address
+                {t.newsletter.emailLabel}
               </label>
               <input
                 id="newsletter-email"
                 type="email"
                 required
-                placeholder="Enter email"
+                placeholder={t.newsletter.placeholder}
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 maxLength={160}
@@ -98,7 +100,7 @@ export default function NewsletterSection() {
                 className="absolute left-[-10000px] h-px w-px overflow-hidden"
                 aria-hidden="true"
               >
-                Leave this field empty
+                {t.form.honeypot}
                 <input
                   tabIndex={-1}
                   autoComplete="off"
@@ -116,7 +118,7 @@ export default function NewsletterSection() {
                   className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover/submit:translate-x-full"
                 />
                 <span className="relative">
-                  {status === "submitting" ? "Subscribing…" : "Subscribe"}
+                  {status === "submitting" ? t.newsletter.subscribing : t.newsletter.subscribe}
                 </span>
               </button>
             </form>
@@ -134,7 +136,7 @@ export default function NewsletterSection() {
                 animate={{ opacity: 1, y: 0 }}
                 className="text-xs font-medium text-gold"
               >
-                Thanks for subscribing!
+                {t.newsletter.success}
               </motion.p>
             )}
             {status === "error" && (

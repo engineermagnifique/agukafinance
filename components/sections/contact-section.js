@@ -6,6 +6,7 @@ import ConsultationForm from "@/components/ui/consultation-form";
 import ParallaxDecor from "@/components/ui/parallax-decor";
 import FlowingGlow from "@/components/ui/flowing-glow";
 import { siteConfig } from "@/lib/site-config";
+import { getDictionary } from "@/lib/i18n/server";
 
 const decorBlobs = [
   {
@@ -18,24 +19,26 @@ const decorBlobs = [
 const contactItems = [
   {
     icon: Phone,
-    label: "Call us",
+    labelKey: "callUs",
     value: siteConfig.phone,
     href: siteConfig.phoneHref,
   },
   {
     icon: Mail,
-    label: "Email us",
+    labelKey: "emailUs",
     value: siteConfig.email,
     href: `mailto:${siteConfig.email}`,
   },
   {
     icon: MapPin,
-    label: "Visit us",
+    labelKey: "visitUs",
     value: `${siteConfig.address.line1}, ${siteConfig.address.line2}`,
   },
 ];
 
-export default function ContactSection() {
+export default async function ContactSection() {
+  const { t } = await getDictionary();
+
   return (
     <section
       id="contact"
@@ -45,20 +48,18 @@ export default function ContactSection() {
       <ParallaxDecor blobs={decorBlobs} />
       <div className="relative mx-auto grid max-w-7xl gap-14 px-6 py-16 sm:py-24 lg:grid-cols-[1fr_1.15fr] lg:gap-[8vw] lg:px-10">
         <Reveal>
-          <Eyebrow>LET&rsquo;S CONNECT</Eyebrow>
+          <Eyebrow>{t.contact.eyebrow}</Eyebrow>
           <h2 className="mt-3 text-[clamp(30px,4vw,49px)] font-bold leading-[1.13] text-navy">
-            Start with a simple conversation
+            {t.contact.title}
           </h2>
           <p className="mt-3 max-w-md leading-relaxed text-muted">
-            Give us a call or send us a text message or fill out the free
-            consultation form, our representative will be more than happy to
-            help.
+            {t.contact.intro}
           </p>
 
           <dl className="mt-8 space-y-6">
             {contactItems.map((item, index) => (
               <Reveal
-                key={item.label}
+                key={item.labelKey}
                 delay={0.1 + index * 0.08}
                 whileHover={{ x: 4 }}
                 className="group flex items-start gap-3.5"
@@ -67,7 +68,7 @@ export default function ContactSection() {
                   <item.icon size={16} />
                 </span>
                 <div>
-                  <dt className="text-[11px] text-gray-400">{item.label}</dt>
+                  <dt className="text-[11px] text-gray-400">{t.contact[item.labelKey]}</dt>
                   {item.href ? (
                     <dd className="font-semibold leading-relaxed text-navy">
                       <a href={item.href} className="hover:text-brand">

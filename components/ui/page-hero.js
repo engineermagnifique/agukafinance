@@ -5,8 +5,11 @@ import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
 import Eyebrow from "@/components/ui/eyebrow";
 import { staggerContainer, fadeUp } from "@/lib/motion";
+import { useI18n } from "@/components/i18n/language-provider";
 
 export default function PageHero({ eyebrow, title, subtitle, breadcrumb }) {
+  const { t } = useI18n();
+
   return (
     <section className="relative overflow-hidden bg-navy py-14 text-center text-white sm:py-16">
       <div
@@ -28,7 +31,7 @@ export default function PageHero({ eyebrow, title, subtitle, breadcrumb }) {
         {breadcrumb && breadcrumb.length > 0 && (
           <motion.nav
             variants={fadeUp}
-            aria-label="Breadcrumb"
+            aria-label={t.common.breadcrumb}
             className="mb-4 flex items-center justify-center gap-1.5 text-[12px] font-medium text-white/60"
           >
             {breadcrumb.map((item, index) => (

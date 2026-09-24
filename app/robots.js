@@ -1,4 +1,4 @@
-import { siteConfig } from "@/lib/site-config";
+import { getSiteUrl } from "@/lib/site-url";
 
 export default function robots() {
   return {
@@ -6,6 +6,6 @@ export default function robots() {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: `${siteConfig.url}/sitemap.xml`,
+    sitemap: `${getSiteUrl()}/sitemap.xml`,
   };
 }

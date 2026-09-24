@@ -8,12 +8,11 @@ import dayImage from "@/public/images/hero-daylight.png";
 import Reveal from "@/components/ui/reveal";
 import Eyebrow from "@/components/ui/eyebrow";
 import TypewriterQuote from "@/components/ui/typewriter-quote";
-
-const MESSAGE =
-  "In the pursuit of your dreams, financial security, personal dignity, and family legacy, wealth creation and wealth protection go hand in hand. Whether you are building a career, growing a business, planning for retirement, creating generational wealth, or acquiring valuable assets, protecting those achievements is just as important as building them. Properly structured insurance coverage can serve as a vital shield, helping safeguard what matters most today while preserving the foundation of your legacy for generations to come.";
+import { useI18n } from "@/components/i18n/language-provider";
 
 export default function TrustBand() {
   const sectionRef = useRef(null);
+  const { t } = useI18n();
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
@@ -32,7 +31,7 @@ export default function TrustBand() {
       >
         <Image
           src={dayImage}
-          alt="A family smiling together in front of their home and cars in the driveway"
+          alt={t.trust.imageAlt}
           fill
           sizes="100vw"
           className="object-cover object-[75%_center]"
@@ -42,7 +41,7 @@ export default function TrustBand() {
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
         <Reveal className="max-w-lg">
-          <Eyebrow>MESSAGE OF THE MONTH</Eyebrow>
+          <Eyebrow>{t.trust.eyebrow}</Eyebrow>
 
           <Quote
             size={26}
@@ -52,7 +51,7 @@ export default function TrustBand() {
           />
 
           <blockquote className="mt-3 text-[clamp(15px,1.7vw,18px)] font-medium italic leading-[1.7] text-white/90">
-            <TypewriterQuote text={MESSAGE} />
+            <TypewriterQuote key={t.trust.message} text={t.trust.message} />
           </blockquote>
 
           <div className="mt-5 flex items-center gap-3 border-t border-white/15 pt-4">
@@ -63,7 +62,7 @@ export default function TrustBand() {
               <p className="text-sm font-semibold text-white">
                 Paul R. Kempton, MBA
               </p>
-              <p className="text-xs text-white/60">Founder, AGUKA Financial Group</p>
+              <p className="text-xs text-white/60">{t.trust.founderRole}</p>
             </div>
           </div>
         </Reveal>

@@ -3,9 +3,11 @@
 import { useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
+import { useI18n } from "@/components/i18n/language-provider";
 
 export default function Modal({ open, onClose, title, children }) {
   const panelRef = useRef(null);
+  const { t } = useI18n();
 
   useEffect(() => {
     if (!open) return undefined;
@@ -51,7 +53,7 @@ export default function Modal({ open, onClose, title, children }) {
             <button
               type="button"
               onClick={onClose}
-              aria-label="Close dialog"
+              aria-label={t.common.closeDialog}
               className="absolute -top-3 -right-3 z-10 grid h-9 w-9 place-items-center rounded-full bg-white text-navy shadow-lg transition-transform hover:scale-105"
             >
               <X size={18} />

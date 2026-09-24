@@ -4,6 +4,8 @@ import { createLead } from "@/lib/leads";
 import { sendMail } from "@/lib/mailer";
 import { buildLeadEmailHtml, buildLeadEmailText } from "@/lib/lead-email";
 import { attachmentMaxBytes, siteConfig } from "@/lib/site-config";
+import { getRequestLocale } from "@/lib/i18n/server";
+import { getDictionaryFor } from "@/lib/i18n/dictionaries";
 
 const REQUIRED_FIELDS = [
   "firstName",
@@ -22,16 +24,16 @@ function clean(value, limit = 1000) {
   return value.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, "").trim().slice(0, limit);
 }
 
-async function readAttachment(file) {
+async function readAttachment(file, t) {
   if (!file || typeof file.arrayBuffer !== "function" || file.size === 0) {
     return { data: null, name: null, type: null };
   }
 
   if (!ALLOWED_ATTACHMENT_TYPES.has(file.type)) {
-    throw new Error("Attachments must be a PDF, PNG or JPEG file.");
+    throw new Error(t.form.attachmentType);
   }
   if (file.size > attachmentMaxBytes) {
-    throw new Error("Attachments must be 5MB or smaller.");
+    throw new Error(t.form.attachmentSize);
   }
 
   const buffer = Buffer.from(await file.arrayBuffer());
@@ -39,11 +41,14 @@ async function readAttachment(file) {
 }
 
 export async function POST(request) {
+  const locale = getRequestLocale(request);
+  const t = getDictionaryFor(locale);
+
   let form;
   try {
     form = await request.formData();
   } catch {
-    return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
+    return NextResponse.json({ error: t.api.invalidBody }, { status: 400 });
   }
 
   const get = (key, limit) => clean(form.get(key)?.toString() ?? "", limit);
@@ -57,7 +62,7 @@ export async function POST(request) {
   const captchaOk = await verifyAltchaPayload(captchaPayload);
   if (!captchaOk) {
     return NextResponse.json(
-      { error: "We could not verify you're human. Please try again." },
+      { error: t.api.captcha },
       { status: 400 }
     );
   }
@@ -73,12 +78,14 @@ export async function POST(request) {
     taxSupport: get("taxSupport", 160),
     message: get("message", 1000) || null,
     consent: form.get("consent") === "true",
+    // Status-update emails to this client go out in the language they used.
+    locale,
   };
 
   for (const field of REQUIRED_FIELDS) {
     if (!data[field]) {
       return NextResponse.json(
-        { error: "Please complete all required fields." },
+        { error: t.api.required },
         { status: 400 }
       );
     }
@@ -86,20 +93,20 @@ export async function POST(request) {
 
   if (!data.consent) {
     return NextResponse.json(
-      { error: "Please agree to be contacted before submitting." },
+      { error: t.api.consent },
       { status: 400 }
     );
   }
 
   if (!EMAIL_PATTERN.test(data.email)) {
     return NextResponse.json(
-      { error: "Please provide a valid email address." },
+      { error: t.api.invalidEmail },
       { status: 400 }
     );
   }
 
   try {
-    const attachment = await readAttachment(form.get("attachment"));
+    const attachment = await readAttachment(form.get("attachment"), t);
     data.attachmentData = attachment.data;
     data.attachmentName = attachment.name;
     data.attachmentType = attachment.type;
@@ -129,7 +136,7 @@ export async function POST(request) {
   // request only if it made it through neither the database nor email.
   if (!saved && !emailed) {
     return NextResponse.json(
-      { error: "We could not send your request. Please call us instead." },
+      { error: t.api.sendFailed },
       { status: 500 }
     );
   }

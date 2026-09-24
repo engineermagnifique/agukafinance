@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Paperclip, X } from "lucide-react";
 import Eyebrow from "@/components/ui/eyebrow";
 import Altcha from "@/components/ui/altcha";
+import { useI18n } from "@/components/i18n/language-provider";
 import {
   attachmentAccept,
   attachmentMaxBytes,
@@ -57,6 +58,10 @@ function mapServiceToInterests(service) {
 
 export default function ConsultationForm({ initialService = null, className }) {
   const searchParams = useSearchParams();
+  const { t } = useI18n();
+  // Option values stay in English (they're stored with the request); only the
+  // visible label is translated.
+  const optionLabel = (option) => t.options[option] || option;
   const prefillService = initialService ?? searchParams.get("service");
 
   const [values, setValues] = useState(() => ({
@@ -112,14 +117,14 @@ export default function ConsultationForm({ initialService = null, className }) {
 
     const allowedTypes = ["application/pdf", "image/png", "image/jpeg"];
     if (!allowedTypes.includes(file.type)) {
-      setAttachmentError("Attachments must be a PDF, PNG or JPEG file.");
+      setAttachmentError(t.form.attachmentType);
       event.target.value = "";
       setAttachment(null);
       return;
     }
 
     if (file.size > attachmentMaxBytes) {
-      setAttachmentError("Attachments must be 5MB or smaller.");
+      setAttachmentError(t.form.attachmentSize);
       event.target.value = "";
       setAttachment(null);
       return;
@@ -163,7 +168,7 @@ export default function ConsultationForm({ initialService = null, className }) {
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.error || "Something went wrong.");
+        throw new Error(result.error || t.form.genericError);
       }
 
       setStatus("success");
@@ -176,7 +181,7 @@ export default function ConsultationForm({ initialService = null, className }) {
       setErrorMessage(
         error instanceof Error
           ? error.message
-          : "We could not send your request. Please try again."
+          : t.form.fallbackError
       );
     }
   }
@@ -189,14 +194,14 @@ export default function ConsultationForm({ initialService = null, className }) {
         "flex flex-col gap-4 border-t-4 border-brand bg-white p-7 shadow-[0_16px_40px_rgba(15,28,46,0.1)] sm:p-9"
       }
     >
-      <Eyebrow>FREE CONSULTATION</Eyebrow>
+      <Eyebrow>{t.form.eyebrow}</Eyebrow>
       <h3 className="text-2xl font-bold text-navy sm:text-[29px]">
-        How can we help?
+        {t.form.title}
       </h3>
 
       <fieldset className="flex flex-col gap-2">
         <legend className="mb-1 text-[11px] font-semibold text-ink">
-          Insurances
+          {t.form.insurances}
         </legend>
         <div className="flex flex-wrap gap-x-5 gap-y-2">
           {insuranceInterestOptions.map((option) => (
@@ -207,7 +212,7 @@ export default function ConsultationForm({ initialService = null, className }) {
                 onChange={toggleInterest(option)}
                 className="h-4 w-4 shrink-0 accent-brand"
               />
-              {option}
+              {optionLabel(option)}
             </label>
           ))}
         </div>
@@ -215,7 +220,7 @@ export default function ConsultationForm({ initialService = null, className }) {
 
       <fieldset className="flex flex-col gap-2">
         <legend className="mb-1 text-[11px] font-semibold text-ink">
-          Financial Services
+          {t.form.financialServices}
         </legend>
         <div className="flex flex-wrap gap-x-5 gap-y-2">
           {financialInterestOptions.map((option) => (
@@ -226,7 +231,7 @@ export default function ConsultationForm({ initialService = null, className }) {
                 onChange={toggleInterest(option)}
                 className="h-4 w-4 shrink-0 accent-brand"
               />
-              {option}
+              {optionLabel(option)}
             </label>
           ))}
         </div>
@@ -234,7 +239,7 @@ export default function ConsultationForm({ initialService = null, className }) {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <label className={labelClass}>
-          First name
+          {t.form.firstName}
           <input
             className={fieldClass}
             value={values.firstName}
@@ -245,7 +250,7 @@ export default function ConsultationForm({ initialService = null, className }) {
           />
         </label>
         <label className={labelClass}>
-          Last name
+          {t.form.lastName}
           <input
             className={fieldClass}
             value={values.lastName}
@@ -259,7 +264,7 @@ export default function ConsultationForm({ initialService = null, className }) {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <label className={labelClass}>
-          Email
+          {t.form.email}
           <input
             type="email"
             className={fieldClass}
@@ -271,7 +276,7 @@ export default function ConsultationForm({ initialService = null, className }) {
           />
         </label>
         <label className={labelClass}>
-          Phone
+          {t.form.phone}
           <input
             type="tel"
             className={fieldClass}
@@ -293,11 +298,11 @@ export default function ConsultationForm({ initialService = null, className }) {
             transition={{ duration: 0.2 }}
             className={`${labelClass} overflow-hidden`}
           >
-            What would you like to protect?
+            {t.form.coverageLabel}
             <textarea
               rows={3}
               maxLength={1000}
-              placeholder="Tell us briefly about your coverage needs."
+              placeholder={t.form.coveragePlaceholder}
               className={fieldClass}
               value={values.coverageNeeds}
               onChange={update("coverageNeeds")}
@@ -313,7 +318,7 @@ export default function ConsultationForm({ initialService = null, className }) {
             transition={{ duration: 0.2 }}
             className={`${labelClass} overflow-hidden`}
           >
-            Tax support needed
+            {t.form.taxSupportLabel}
             <select
               className={fieldClass}
               value={values.taxSupport}
@@ -321,7 +326,7 @@ export default function ConsultationForm({ initialService = null, className }) {
             >
               {taxSupportOptions.map((option) => (
                 <option key={option} value={option}>
-                  {option}
+                  {optionLabel(option)}
                 </option>
               ))}
             </select>
@@ -331,7 +336,7 @@ export default function ConsultationForm({ initialService = null, className }) {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <label className={labelClass}>
-          Preferred contact method
+          {t.form.preferredContact}
           <select
             className={fieldClass}
             value={values.preferredContact}
@@ -340,17 +345,17 @@ export default function ConsultationForm({ initialService = null, className }) {
           >
             {preferredContactOptions.map((option) => (
               <option key={option} value={option}>
-                {option}
+                {optionLabel(option)}
               </option>
             ))}
           </select>
         </label>
         <label className={labelClass}>
-          Anything else we should know?
+          {t.form.messageLabel}
           <textarea
             rows={1}
             maxLength={1000}
-            placeholder="Optional — add any extra details."
+            placeholder={t.form.messagePlaceholder}
             className={`${fieldClass} resize-y`}
             value={values.message}
             onChange={update("message")}
@@ -359,9 +364,9 @@ export default function ConsultationForm({ initialService = null, className }) {
       </div>
 
       <div className={labelClass}>
-        Attach a file (optional)
+        {t.form.attachLabel}
         <p className="text-[11px] font-normal text-muted">
-          PDF, PNG or JPEG, up to 5MB.
+          {t.form.attachHint}
         </p>
         {attachment ? (
           <div className="flex items-center justify-between gap-2 rounded-[3px] border border-gray-300 bg-cream px-3.5 py-2.5 text-[13px] text-ink">
@@ -372,7 +377,7 @@ export default function ConsultationForm({ initialService = null, className }) {
             <button
               type="button"
               onClick={removeAttachment}
-              aria-label="Remove attachment"
+              aria-label={t.form.removeAttachment}
               className="shrink-0 text-muted transition-colors hover:text-brand"
             >
               <X size={15} />
@@ -392,7 +397,7 @@ export default function ConsultationForm({ initialService = null, className }) {
       </div>
 
       <label className="absolute left-[-10000px] h-px w-px overflow-hidden" aria-hidden="true">
-        Leave this field empty
+        {t.form.honeypot}
         <input
           tabIndex={-1}
           autoComplete="off"
@@ -411,11 +416,7 @@ export default function ConsultationForm({ initialService = null, className }) {
           }
           className="mt-0.5 h-4 w-4 shrink-0 accent-brand"
         />
-        <span>
-          I agree to be contacted about my request. Submitting this form
-          does not create a client relationship or guarantee eligibility,
-          coverage, rates, or tax outcomes.
-        </span>
+        <span>{t.form.consent}</span>
       </label>
 
       <Altcha ref={altchaRef} onChange={handleCaptchaChange} className="self-start" />
@@ -430,7 +431,7 @@ export default function ConsultationForm({ initialService = null, className }) {
           className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover/submit:translate-x-full"
         />
         <span className="relative">
-          {status === "submitting" ? "Sending…" : "Request Free Consultation →"}
+          {status === "submitting" ? t.form.submitting : t.form.submit}
         </span>
       </button>
 
@@ -443,8 +444,7 @@ export default function ConsultationForm({ initialService = null, className }) {
             exit={{ opacity: 0 }}
             className="bg-[#fff3e8] p-3 text-xs leading-relaxed text-[#a94608]"
           >
-            Thank you. Your free consultation request was sent to AGUKA
-            Financial Group.
+            {t.form.success}
           </motion.p>
         )}
         {status === "error" && (
@@ -455,8 +455,7 @@ export default function ConsultationForm({ initialService = null, className }) {
             exit={{ opacity: 0 }}
             className="bg-[#fff0f0] p-3 text-xs leading-relaxed text-[#991b1b]"
           >
-            {errorMessage ||
-              "We could not send your request. Please email info@agukafinancial.com or call 502-212-0201."}
+            {errorMessage || t.form.fallbackError}
           </motion.p>
         )}
       </AnimatePresence>

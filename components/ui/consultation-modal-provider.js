@@ -3,6 +3,7 @@
 import { createContext, useContext, useState, Suspense } from "react";
 import Modal from "@/components/ui/modal";
 import ConsultationForm from "@/components/ui/consultation-form";
+import { useI18n } from "@/components/i18n/language-provider";
 
 const ConsultationModalContext = createContext(null);
 
@@ -21,6 +22,7 @@ const modalFormClass =
 
 export default function ConsultationModalProvider({ children }) {
   const [service, setService] = useState(null);
+  const { t } = useI18n();
 
   return (
     <ConsultationModalContext.Provider value={{ openFor: setService }}>
@@ -29,7 +31,7 @@ export default function ConsultationModalProvider({ children }) {
       <Modal
         open={Boolean(service)}
         onClose={() => setService(null)}
-        title="Request a free consultation"
+        title={t.form.modalTitle}
       >
         <Suspense fallback={null}>
           {service && (

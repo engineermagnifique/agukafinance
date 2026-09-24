@@ -10,9 +10,11 @@ import { staggerContainer, fadeUp, floatLoop } from "@/lib/motion";
 import { scrollToContact } from "@/lib/scroll";
 import FlipWord from "@/components/ui/flip-word";
 import ScrollFlipWord from "@/components/ui/scroll-flip-word";
+import { useI18n } from "@/components/i18n/language-provider";
 
 export default function HeroSection() {
   const sectionRef = useRef(null);
+  const { t } = useI18n();
   const [loaded, setLoaded] = useState(false);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -62,7 +64,7 @@ export default function HeroSection() {
         >
           <Image
             src={heroImage}
-            alt="A family standing in front of their home at sunset, arms around each other"
+            alt={t.hero.imageAlt}
             fill
             priority
             sizes="100vw"
@@ -92,7 +94,7 @@ export default function HeroSection() {
             className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-[12px] font-semibold text-white/85 backdrop-blur-sm"
           >
             <Sparkles size={13} className="text-gold" />
-            Insurances. Taxes. Financial Planning Solutions
+            {t.hero.badge}
           </motion.span>
 
           <motion.h1
@@ -100,11 +102,11 @@ export default function HeroSection() {
             className="mt-5 text-[clamp(30px,7.5vw,69px)] font-bold leading-[1.08] tracking-tight"
           >
             <span className="block whitespace-nowrap">
-              Building and <FlipWord color="#f07d1a">Protecting</FlipWord>
+              {t.hero.titleLead} <FlipWord color="#f07d1a">{t.hero.titleFlip}</FlipWord>
             </span>
             <span className="block whitespace-nowrap text-gold">
               <ScrollFlipWord progress={scrollYProgress} range={[0, 0.12]} color="#ffffff">
-                What Matters Most
+                {t.hero.titleLine2}
               </ScrollFlipWord>
             </span>
           </motion.h1>
@@ -113,8 +115,7 @@ export default function HeroSection() {
             variants={fadeUp}
             className="mt-6 max-w-[480px] text-sm leading-[1.75] text-white/75 sm:text-base"
           >
-            Personalized trusted insurance and financial product strategies
-            delivered with care, transparency and honesty.
+            {t.hero.subtitle}
           </motion.p>
 
           <motion.div
@@ -130,7 +131,7 @@ export default function HeroSection() {
                 aria-hidden="true"
                 className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover/cta:translate-x-full"
               />
-              <span className="relative py-2.5">Check Quote Today</span>
+              <span className="relative py-2.5">{t.hero.cta}</span>
               <span className="relative grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white text-brand transition-transform duration-300 group-hover/cta:translate-x-0.5">
                 <ArrowRight size={16} />
               </span>
@@ -149,7 +150,7 @@ export default function HeroSection() {
           <ShieldCheck size={19} />
         </span>
         <span className="max-w-[160px] text-[13px] font-bold leading-tight text-navy">
-          Backed by 5+ years of professional experience
+          {t.hero.experience}
         </span>
       </motion.div>
     </section>

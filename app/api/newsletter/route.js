@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { verifyAltchaPayload } from "@/lib/altcha";
 import { subscribeEmail } from "@/lib/newsletter";
+import { getRequestLocale } from "@/lib/i18n/server";
+import { getDictionaryFor } from "@/lib/i18n/dictionaries";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -10,11 +12,14 @@ function clean(value, limit = 200) {
 }
 
 export async function POST(request) {
+  const locale = getRequestLocale(request);
+  const t = getDictionaryFor(locale);
+
   let body;
   try {
     body = await request.json();
   } catch {
-    return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
+    return NextResponse.json({ error: t.api.invalidBody }, { status: 400 });
   }
 
   // Honeypot: bots fill hidden fields, humans never see them.
@@ -25,7 +30,7 @@ export async function POST(request) {
   const captchaOk = await verifyAltchaPayload(clean(body.altcha, 2000));
   if (!captchaOk) {
     return NextResponse.json(
-      { error: "We could not verify you're human. Please try again." },
+      { error: t.api.captcha },
       { status: 400 }
     );
   }
@@ -34,17 +39,17 @@ export async function POST(request) {
 
   if (!EMAIL_PATTERN.test(email)) {
     return NextResponse.json(
-      { error: "Please provide a valid email address." },
+      { error: t.api.invalidEmail },
       { status: 400 }
     );
   }
 
   try {
-    await subscribeEmail(email);
+    await subscribeEmail(email, locale);
   } catch (error) {
     console.error("[newsletter] failed to save subscriber", error);
     return NextResponse.json(
-      { error: "We could not save your subscription. Please try again." },
+      { error: t.api.subscribeFailed },
       { status: 500 }
     );
   }

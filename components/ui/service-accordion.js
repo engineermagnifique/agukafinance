@@ -5,7 +5,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ArrowRight } from "lucide-react";
 import { useConsultationModal } from "@/components/ui/consultation-modal-provider";
 
-export default function ServiceAccordion({ items, servicePrefix, triggerLabel }) {
+// `items` are the English option values sent to the consultation form;
+// `labels` (same order) are what the visitor sees in their language.
+export default function ServiceAccordion({ items, labels = [], servicePrefix, triggerLabel }) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
   const { openFor } = useConsultationModal();
@@ -39,14 +41,14 @@ export default function ServiceAccordion({ items, servicePrefix, triggerLabel })
             className="overflow-hidden"
           >
             <ul className="mt-3 max-h-[225px] overflow-y-auto border-t border-brand/20">
-              {items.map((item) => (
+              {items.map((item, index) => (
                 <li key={item} className="border-b border-gray-200">
                   <button
                     type="button"
                     onClick={() => openFor(`${servicePrefix}: ${item}`)}
                     className="flex w-full items-center justify-between gap-2.5 py-2.5 text-left text-xs text-ink transition-colors hover:text-brand"
                   >
-                    <span>{item}</span>
+                    <span>{labels[index] || item}</span>
                     <ArrowRight size={13} className="text-brand" />
                   </button>
                 </li>

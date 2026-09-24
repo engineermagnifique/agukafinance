@@ -1,16 +1,19 @@
 import { Facebook, Instagram, Linkedin, Home as HomeIcon } from "lucide-react";
 import Logo from "@/components/layout/logo";
 import { siteConfig, socialLinks } from "@/lib/site-config";
+import { getDictionary } from "@/lib/i18n/server";
+import { format } from "@/lib/i18n/config";
 
 const socialIcons = { Facebook, Instagram, Linkedin };
 
 const legalLinks = [
-  { label: "Privacy Policy", href: "/privacy-policy" },
-  { label: "Terms of Service", href: "/terms-of-service" },
-  { label: "Accessibility Statement", href: "/accessibility" },
+  { key: "privacy", href: "/privacy-policy" },
+  { key: "terms", href: "/terms-of-service" },
+  { key: "accessibility", href: "/accessibility" },
 ];
 
-export default function SiteFooter() {
+export default async function SiteFooter() {
+  const { t } = await getDictionary();
   const year = new Date().getFullYear();
 
   return (
@@ -19,7 +22,7 @@ export default function SiteFooter() {
         <div className="flex flex-col items-start gap-4">
           <Logo size="footer" />
           <p className="max-w-xs text-[13px] leading-relaxed text-white/50">
-            {siteConfig.tagline}.
+            {t.meta.tagline}.
           </p>
           <div className="flex items-center gap-3">
             {socialLinks.map((social) => {
@@ -42,30 +45,30 @@ export default function SiteFooter() {
 
         <div className="flex flex-col gap-3 text-[12px]">
           <h4 className="text-[11px] font-semibold uppercase tracking-[1.5px] text-white/70">
-            Quick Links
+            {t.footer.quickLinks}
           </h4>
           <a href="#services" className="text-white/50 hover:text-brand">
-            Our Services
+            {t.footer.ourServices}
           </a>
           <a href="#contact" className="text-white/50 hover:text-brand">
-            Contact Us
+            {t.footer.contactUs}
           </a>
         </div>
 
         <div className="flex flex-col gap-3 text-[12px]">
           <h4 className="text-[11px] font-semibold uppercase tracking-[1.5px] text-white/70">
-            Legal
+            {t.footer.legal}
           </h4>
           {legalLinks.map((link) => (
             <a key={link.href} href={link.href} className="text-white/50 hover:text-brand">
-              {link.label}
+              {t.footer[link.key]}
             </a>
           ))}
         </div>
 
         <div className="flex flex-col gap-3 text-[12px]">
           <h4 className="text-[11px] font-semibold uppercase tracking-[1.5px] text-white/70">
-            Contact
+            {t.footer.contact}
           </h4>
           <a href={siteConfig.phoneHref} className="text-white/50 hover:text-brand">
             {siteConfig.phone}
@@ -76,12 +79,12 @@ export default function SiteFooter() {
           >
             {siteConfig.email}
           </a>
-          <p className="text-white/50">Irving, Texas</p>
+          <p className="text-white/50">{t.footer.city}</p>
         </div>
 
         <div className="flex flex-col gap-3 text-[12px]">
           <h4 className="text-[11px] font-semibold uppercase tracking-[1.5px] text-white/70">
-            License Information
+            {t.footer.license}
           </h4>
           <p className="leading-relaxed text-white/50">
             NPN: {siteConfig.license.npn}
@@ -101,11 +104,11 @@ export default function SiteFooter() {
             rel="noopener noreferrer"
             className="text-white/50 hover:text-brand"
           >
-            NMLS Consumer Access
+            {t.footer.nmls}
           </a>
           <span className="mt-1 inline-flex items-center gap-1.5 text-white/50">
             <HomeIcon size={13} className="shrink-0" />
-            Equal Housing Opportunity
+            {t.footer.equalHousing}
           </span>
         </div>
       </div>
@@ -113,29 +116,18 @@ export default function SiteFooter() {
       <div className="border-t border-white/10 px-6 py-5 lg:px-10">
         <div className="mx-auto flex max-w-7xl flex-col-reverse items-start justify-between gap-6 lg:flex-row lg:items-end">
           <div className="max-w-3xl space-y-2 text-[9px] leading-relaxed text-white/40">
+            <p>{t.footer.disclaimer}</p>
             <p>
-              Insurance products and availability vary by state and carrier.
-              Coverage is subject to underwriting, policy terms, conditions
-              and exclusions. Tax services do not constitute legal advice.
-              AGUKA Financial Group is neither a carrier nor a bank or
-              lender.
-            </p>
-            <p>
-              <b className="text-white/60">Mortgage disclosure:</b> Mortgage
-              services are provided by a licensed mortgage loan originator
-              through an approved mortgage broker firm. The third-party rate
-              link opens a separate website. Programs, rates and eligibility
-              are subject to lender guidelines and approval. AGUKA Financial
-              Group supports the Equal Credit Opportunity Act and the Fair
-              Housing Act.
+              <b className="text-white/60">{t.footer.mortgageLabel}</b>{" "}
+              {t.footer.mortgageDisclosure}
             </p>
           </div>
           <div className="flex flex-col items-start gap-1 lg:items-end">
             <p className="whitespace-nowrap text-[9px] text-white/40">
-              © {year} AGUKA Financial Group.
+              {format(t.footer.copyright, { year })}
             </p>
             <p className="whitespace-nowrap text-[9px] text-white/30">
-              Powered by Magnifique N
+              {t.footer.poweredBy}
             </p>
           </div>
         </div>

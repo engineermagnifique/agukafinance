@@ -4,14 +4,19 @@ import PageHero from "@/components/ui/page-hero";
 import Reveal from "@/components/ui/reveal";
 import Eyebrow from "@/components/ui/eyebrow";
 import TrustBand from "@/components/sections/trust-band";
-import { siteConfig, values } from "@/lib/site-config";
+import { values } from "@/lib/site-config";
+import { getDictionary } from "@/lib/i18n/server";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "About AGUKA Financial Group LLC",
-  description:
-    "AGUKA Financial Group LLC (“AFG”) is an independent insurance and financial solutions support firm that puts the client's interest first.",
-  alternates: { canonical: "/about" },
-};
+export async function generateMetadata() {
+  const { locale, t } = await getDictionary();
+  return pageMetadata({
+    title: t.meta.aboutTitle,
+    description: t.meta.aboutDescription,
+    path: "/about",
+    locale,
+  });
+}
 
 const valueIcons = {
   Integrity: ShieldCheck,
@@ -20,26 +25,26 @@ const valueIcons = {
   Affordability: Wallet,
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const { t } = await getDictionary();
+
   return (
     <>
       <PageHero
-        eyebrow="ABOUT US"
-        title="About AGUKA Financial Group LLC"
-        subtitle={siteConfig.tagline}
-        breadcrumb={[{ label: "Home", href: "/" }, { label: "About" }]}
+        eyebrow={t.about.eyebrow}
+        title={t.about.title}
+        subtitle={t.meta.tagline}
+        breadcrumb={[{ label: t.nav.home, href: "/" }, { label: t.about.breadcrumb }]}
       />
 
       <section className="bg-cream">
         <div className="mx-auto max-w-3xl px-6 py-16 text-center sm:py-20 lg:px-10">
           <Reveal>
-            <Eyebrow align="center">ABOUT AGUKA FINANCIAL GROUP LLC</Eyebrow>
+            <Eyebrow align="center">{t.about.sectionEyebrow}</Eyebrow>
             <h2 className="mt-3 text-[clamp(20px,2.6vw,28px)] font-bold leading-[1.2] text-navy">
-              AGUKA Financial Group LLC (“AFG”) is an independent insurance and financial solutions support firm that puts the client&apos;s interest first.
+              {t.about.heading}
             </h2>
-            <p className="mx-auto mt-4 leading-relaxed text-muted">
-              It was created to help individuals, families, and small businesses across the American communities we serve to navigate insurance and financial growth decisions with confidence.
-            </p>
+            <p className="mx-auto mt-4 leading-relaxed text-muted">{t.about.intro}</p>
           </Reveal>
         </div>
 
@@ -48,23 +53,15 @@ export default function AboutPage() {
             delay={0.05}
             className="rounded-xl border border-gray-100 bg-white p-7 text-center sm:text-left"
           >
-            <Eyebrow align="center">VISION</Eyebrow>
-            <p className="mt-3 leading-relaxed text-ink">
-              To become the most trusted and reliable independent one-stop-hub
-              for affordable insurance and financial products for the
-              American communities we serve.
-            </p>
+            <Eyebrow align="center">{t.about.visionLabel}</Eyebrow>
+            <p className="mt-3 leading-relaxed text-ink">{t.about.vision}</p>
           </Reveal>
           <Reveal
             delay={0.1}
             className="rounded-xl border border-gray-100 bg-white p-7 text-center sm:text-left"
           >
-            <Eyebrow align="center">MISSION</Eyebrow>
-            <p className="mt-3 leading-relaxed text-ink">
-              To provide transparent, and/or educate, affordable insurance and
-              financial strategies that equip families and small businesses
-              with the means to accelerate their financial growth.
-            </p>
+            <Eyebrow align="center">{t.about.missionLabel}</Eyebrow>
+            <p className="mt-3 leading-relaxed text-ink">{t.about.mission}</p>
           </Reveal>
         </div>
       </section>
@@ -72,14 +69,14 @@ export default function AboutPage() {
       <section className="bg-white">
         <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20 lg:px-10">
           <Reveal className="mx-auto max-w-2xl text-center">
-            <Eyebrow align="center">MOTTO</Eyebrow>
+            <Eyebrow align="center">{t.about.mottoLabel}</Eyebrow>
             <h2 className="mt-3 text-[clamp(26px,3.6vw,36px)] font-bold leading-[1.2] text-navy">
-              Build &amp; Protect Wealth at an Affordable Cost.
+              {t.about.motto}
             </h2>
           </Reveal>
 
           <p className="mt-10 text-center text-[12px] font-semibold uppercase tracking-widest text-muted">
-            Core Values
+            {t.about.coreValues}
           </p>
 
           <div className="mx-auto mt-4 grid max-w-4xl grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -95,7 +92,7 @@ export default function AboutPage() {
                   <span className="grid h-14 w-14 place-items-center rounded-full bg-[#fff3e8] text-brand">
                     <Icon size={24} />
                   </span>
-                  <p className="text-sm font-semibold text-navy">{value}</p>
+                  <p className="text-sm font-semibold text-navy">{t.about.values[value] || value}</p>
                 </Reveal>
               );
             })}
@@ -111,16 +108,14 @@ export default function AboutPage() {
           className="mx-auto flex max-w-3xl flex-col items-center gap-5 px-6 py-16 text-center sm:py-20 lg:px-10"
         >
           <h2 className="text-[clamp(24px,3.2vw,32px)] font-bold leading-[1.2] text-navy">
-            Our Pledge
+            {t.about.pledgeTitle}
           </h2>
-          <p className="max-w-2xl leading-relaxed text-muted">
-            We are committed to affordability, honesty, transparency, and professionalism. Our goal is to give every client clear, honest guidance that helps reduce costs and supports long-term financial stability — always presented as options for your consideration, with the final decision resting with you.
-          </p>
+          <p className="max-w-2xl leading-relaxed text-muted">{t.about.pledge}</p>
           <Link
             href="/#contact"
             className="group inline-flex items-center gap-3 rounded-full bg-gradient-to-br from-brand to-brand-dark py-1.5 pl-6 pr-1.5 text-sm font-semibold text-white shadow-lg shadow-brand/20 transition-transform hover:scale-[1.03] active:scale-[0.98]"
           >
-            Contact Us
+            {t.common.contactUs}
             <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white text-brand transition-transform duration-300 group-hover:translate-x-0.5">
               <ArrowRight size={16} />
             </span>

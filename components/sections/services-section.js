@@ -5,7 +5,8 @@ import ConsultationModalProvider from "@/components/ui/consultation-modal-provid
 import ParallaxDecor from "@/components/ui/parallax-decor";
 import FloatingCircles from "@/components/ui/floating-circles";
 import ScrollTintOverlay from "@/components/ui/scroll-tint-overlay";
-import { listActiveServices } from "@/lib/services";
+import { listActiveServices, localizeService } from "@/lib/services";
+import { getDictionary } from "@/lib/i18n/server";
 
 function chunk(items, size) {
   const groups = [];
@@ -29,7 +30,8 @@ const decorBlobs = [
 ];
 
 export default async function ServicesSection() {
-  const services = await listActiveServices();
+  const [{ locale, t }, activeServices] = await Promise.all([getDictionary(), listActiveServices()]);
+  const services = activeServices.map((service) => localizeService(service, locale));
 
   return (
     <ConsultationModalProvider>
@@ -41,9 +43,9 @@ export default async function ServicesSection() {
         </div>
         <div className="relative mx-auto max-w-7xl px-6 py-16 sm:py-24 lg:px-10">
           <Reveal className="mx-auto max-w-2xl text-center">
-            <Eyebrow align="center">HOW WE CAN HELP</Eyebrow>
+            <Eyebrow align="center">{t.servicesSection.eyebrow}</Eyebrow>
             <h2 className="mt-3 text-[clamp(30px,4vw,49px)] font-bold leading-[1.13] text-navy">
-              Insurance, Tax &amp; Mortgage Support
+              {t.servicesSection.title}
             </h2>
           </Reveal>
 

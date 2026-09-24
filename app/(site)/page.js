@@ -4,12 +4,13 @@ import TrustBand from "@/components/sections/trust-band";
 import ContactSection from "@/components/sections/contact-section";
 import NewsletterSection from "@/components/sections/newsletter-section";
 import { siteConfig } from "@/lib/site-config";
+import { getDictionary } from "@/lib/i18n/server";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Insurance, Mortgage & Tax Services in Irving, TX",
-  description: siteConfig.description,
-  alternates: { canonical: "/" },
-};
+export async function generateMetadata() {
+  const { locale, t } = await getDictionary();
+  return pageMetadata({ title: t.meta.homeTitle, description: t.meta.description, path: "/", locale });
+}
 
 // Services are managed from the dashboard, so this page always reflects the latest data.
 export const dynamic = "force-dynamic";

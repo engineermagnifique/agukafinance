@@ -6,13 +6,17 @@ import { serviceIconNames } from "@/lib/service-icons";
 
 const CTA_TYPES = ["info", "apply", "accordion", "none"];
 
-function parseForm(formData) {
-  const icon = String(formData.get("icon") || "Shield");
-  const ctaType = String(formData.get("ctaType") || "info");
-  const accordionItems = String(formData.get("accordionItems") || "")
+function parseLines(value) {
+  return String(value || "")
     .split("\n")
     .map((line) => line.trim())
     .filter(Boolean);
+}
+
+function parseForm(formData) {
+  const icon = String(formData.get("icon") || "Shield");
+  const ctaType = String(formData.get("ctaType") || "info");
+  const accordionItems = parseLines(formData.get("accordionItems"));
 
   return {
     title: String(formData.get("title") || "").trim(),
@@ -24,6 +28,10 @@ function parseForm(formData) {
     accordionItems,
     isActive: formData.get("isActive") === "on",
     sortOrder: Number(formData.get("sortOrder")) || 0,
+    titleRw: String(formData.get("titleRw") || "").trim() || null,
+    descriptionRw: String(formData.get("descriptionRw") || "").trim() || null,
+    ctaLabelRw: String(formData.get("ctaLabelRw") || "").trim() || null,
+    accordionItemsRw: parseLines(formData.get("accordionItemsRw")),
   };
 }
 

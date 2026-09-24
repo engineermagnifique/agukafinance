@@ -9,6 +9,7 @@ import RequestInfoButton from "@/components/ui/request-info-button";
 import ServiceAccordion from "@/components/ui/service-accordion";
 import { getServiceIcon } from "@/lib/service-icons";
 import { fadeUp, viewportOnce } from "@/lib/motion";
+import { useI18n } from "@/components/i18n/language-provider";
 
 const cardClass =
   "group relative flex h-full min-h-[360px] flex-col overflow-hidden rounded-xl border border-gray-200 bg-white p-6 shadow-[0_1px_2px_rgba(15,28,46,0.04)] transition-shadow duration-300 hover:shadow-[0_25px_50px_-12px_rgba(15,28,46,0.22)]";
@@ -16,7 +17,11 @@ const cardClass =
 const iconWrapClass =
   "relative grid h-[55px] w-[55px] place-items-center rounded-full bg-[#fff3e8] text-brand transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6";
 
+// `service` carries the English fields (title, accordionItems) used as values
+// for the consultation form, plus `display` with the visitor's-language copy.
 function ServiceCta({ service }) {
+  const { t } = useI18n();
+
   if (service.ctaType === "apply" && service.ctaHref) {
     return (
       <a
@@ -25,7 +30,7 @@ function ServiceCta({ service }) {
         rel="noopener noreferrer"
         className="group/link mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-brand transition-colors hover:text-brand-dark"
       >
-        {service.ctaLabel || "Learn more"}{" "}
+        {service.display.ctaLabel || t.serviceCard.learnMore}{" "}
         <ArrowRight size={13} className="transition-transform group-hover/link:translate-x-1" />
       </a>
     );
@@ -37,7 +42,7 @@ function ServiceCta({ service }) {
         service={service.title}
         className="group/link mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-brand transition-colors hover:text-brand-dark"
       >
-        {service.ctaLabel || "Request information"}{" "}
+        {service.display.ctaLabel || t.serviceCard.requestInformation}{" "}
         <ArrowRight size={13} className="transition-transform group-hover/link:translate-x-1" />
       </RequestInfoButton>
     );
@@ -48,6 +53,8 @@ function ServiceCta({ service }) {
 
 export default function ServiceCard({ service, index, delay }) {
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const { t } = useI18n();
+  const { display } = service;
   const Icon = getServiceIcon(service.icon);
   const icon = createElement(Icon, { size: 26 });
   const hasStandaloneCta = service.ctaType === "apply" || service.ctaType === "info";
@@ -86,9 +93,9 @@ export default function ServiceCard({ service, index, delay }) {
               {String(index + 1).padStart(2, "0")}
             </span>
           </div>
-          <h3 className="mt-5 text-xl font-semibold text-navy">{service.title}</h3>
+          <h3 className="mt-5 text-xl font-semibold text-navy">{display.title}</h3>
           <p className="mt-2 line-clamp-6 flex-1 text-sm leading-relaxed text-gray-600">
-            {service.description}
+            {display.description}
           </p>
 
           <button
@@ -96,7 +103,7 @@ export default function ServiceCard({ service, index, delay }) {
             onClick={() => setDetailsOpen(true)}
             className="mt-3 inline-flex w-fit items-center gap-1 text-[11px] font-semibold uppercase tracking-wide text-navy/50 transition-colors hover:text-brand"
           >
-            View more
+            {t.serviceCard.viewMore}
             <ArrowRight size={11} />
           </button>
 
@@ -105,27 +112,28 @@ export default function ServiceCard({ service, index, delay }) {
           {service.ctaType === "accordion" && service.accordionItems.length > 0 && (
             <ServiceAccordion
               items={service.accordionItems}
+              labels={display.accordionItems}
               servicePrefix={service.title}
-              triggerLabel={service.ctaLabel || "View coverage options"}
+              triggerLabel={display.ctaLabel || t.serviceCard.viewCoverage}
             />
           )}
         </div>
       </Tilt>
 
-      <Modal open={detailsOpen} onClose={() => setDetailsOpen(false)} title={service.title}>
+      <Modal open={detailsOpen} onClose={() => setDetailsOpen(false)} title={display.title}>
         <div className="rounded-sm border-t-4 border-brand bg-white p-6 shadow-2xl sm:p-8">
           <div className="grid h-14 w-14 place-items-center rounded-full bg-[#fff3e8] text-brand">
             {createElement(Icon, { size: 28 })}
           </div>
-          <h3 className="mt-5 text-2xl font-bold text-navy">{service.title}</h3>
-          <p className="mt-3 text-sm leading-relaxed text-gray-600">{service.description}</p>
+          <h3 className="mt-5 text-2xl font-bold text-navy">{display.title}</h3>
+          <p className="mt-3 text-sm leading-relaxed text-gray-600">{display.description}</p>
 
           {service.ctaType === "accordion" && service.accordionItems.length > 0 && (
             <ul className="mt-5 grid grid-cols-1 gap-2.5 border-t border-gray-100 pt-5 sm:grid-cols-2">
-              {service.accordionItems.map((item) => (
+              {service.accordionItems.map((item, itemIndex) => (
                 <li key={item} className="flex items-center gap-2 text-sm text-ink">
                   <Check size={14} className="shrink-0 text-brand" />
-                  {item}
+                  {display.accordionItems[itemIndex] || item}
                 </li>
               ))}
             </ul>

@@ -2,6 +2,7 @@
 
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import "altcha";
+import { useI18n } from "@/components/i18n/language-provider";
 
 // Renders the self-hosted ALTCHA proof-of-work widget (no external account
 // or tracking, unlike reCAPTCHA) and reports the verified payload via
@@ -16,8 +17,14 @@ import "altcha";
 const Altcha = forwardRef(function Altcha({ onChange, className }, ref) {
   const widgetRef = useRef(null);
   const [mounted, setMounted] = useState(false);
+  const { locale, t } = useI18n();
 
-  useEffect(() => setMounted(true), []);
+  // English ships with the widget; other languages are registered from our
+  // dictionary before the widget renders so it picks them up immediately.
+  useEffect(() => {
+    if (t.altcha) globalThis.$altcha?.i18n.set(locale, t.altcha);
+    setMounted(true);
+  }, [locale, t.altcha]);
 
   useImperativeHandle(ref, () => ({
     reset: () => widgetRef.current?.reset(),
@@ -43,6 +50,7 @@ const Altcha = forwardRef(function Altcha({ onChange, className }, ref) {
           ref={widgetRef}
           challenge="/api/altcha/challenge"
           auto="onload"
+          language={locale}
           hidefooter=""
         />
       )}

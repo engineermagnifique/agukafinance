@@ -114,6 +114,56 @@ export default function ServiceForm({ action, service }) {
         </label>
       )}
 
+      <fieldset className="flex flex-col gap-4 rounded-xl border border-gray-200 p-4">
+        <legend className="px-1 text-xs font-bold uppercase tracking-wide text-navy">
+          Kinyarwanda version
+        </legend>
+        <p className="-mt-1 text-[11px] text-muted">
+          Shown to visitors who switch the site to Kinyarwanda. Leave a field empty to show the
+          English text instead.
+        </p>
+
+        <label className={labelClass}>
+          Title (Kinyarwanda)
+          <input name="titleRw" defaultValue={service?.titleRw || ""} maxLength={120} className={fieldClass} />
+        </label>
+
+        <label className={labelClass}>
+          Description (Kinyarwanda)
+          <textarea
+            name="descriptionRw"
+            defaultValue={service?.descriptionRw || ""}
+            rows={3}
+            maxLength={2000}
+            className={fieldClass}
+          />
+        </label>
+
+        {ctaType !== "none" && (
+          <label className={labelClass}>
+            Button label (Kinyarwanda)
+            <input
+              name="ctaLabelRw"
+              defaultValue={service?.ctaLabelRw || ""}
+              maxLength={80}
+              className={fieldClass}
+            />
+          </label>
+        )}
+
+        {ctaType === "accordion" && (
+          <label className={labelClass}>
+            Options in Kinyarwanda (one per line, same order as the English list)
+            <textarea
+              name="accordionItemsRw"
+              defaultValue={(service?.accordionItemsRw || []).join("\n")}
+              rows={5}
+              className={fieldClass}
+            />
+          </label>
+        )}
+      </fieldset>
+
       <label className="flex items-center gap-2.5 text-sm font-medium text-ink">
         <input
           type="checkbox"
