@@ -8,6 +8,7 @@ import { ArrowRight, Home, Info, Layers, Mail, Menu, X } from "lucide-react";
 import Logo from "@/components/layout/logo";
 import TopBar from "@/components/layout/top-bar";
 import LanguageSwitcher from "@/components/i18n/language-switcher";
+import { LANGUAGE_SWITCHING_ENABLED } from "@/lib/i18n/config";
 import { useI18n } from "@/components/i18n/language-provider";
 import { format } from "@/lib/i18n/config";
 import { navLinks, siteConfig } from "@/lib/site-config";
@@ -102,7 +103,7 @@ export default function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-3 sm:gap-4">
-          <LanguageSwitcher />
+          {LANGUAGE_SWITCHING_ENABLED && <LanguageSwitcher />}
 
           <Link
             href="/?service=General%20Consultation#contact"
